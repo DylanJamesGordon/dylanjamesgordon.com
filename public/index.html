@@ -27,7 +27,7 @@
         </div>
 
         <nav class="chrome__group chrome__group--links" aria-label="Links">
-            <a class="tab" href="resume.pdf">Resume</a>
+            <a class="tab" href="resume.pdf" data-viewer="resume-viewer">Resume</a>
             <a class="tab" href="https://www.linkedin.com/in/dylanjamesgordon/">LinkedIn</a>
             <a class="tab" href="mailto:dylanjamesgordon15@gmail.com">Email</a>
         </nav>
@@ -73,7 +73,19 @@
         </div>
     </main>
 
+    <!-- In-page resume. The frame has no src until first opened, so the PDF
+         costs nothing on initial load. -->
+    <dialog class="viewer" id="resume-viewer" aria-label="Resume">
+        <div class="viewer__bar">
+            <span class="tab">Resume</span>
+            <a class="tab" href="resume.pdf" download="Dylan James Gordon Resume.pdf">Download</a>
+            <button class="tab" type="button" data-close>Close</button>
+        </div>
+        <iframe class="viewer__frame" title="Resume" data-src="resume.pdf#toolbar=0&amp;navpanes=0&amp;view=FitH"></iframe>
+    </dialog>
+
     <script src="gallery.js" type="module"></script>
+    <script src="viewer.js" type="module"></script>
 </body>
 
 </html>
