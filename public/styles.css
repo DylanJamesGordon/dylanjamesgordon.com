@@ -81,32 +81,10 @@ body {
     position: fixed;
     inset: 0;
     z-index: -1;
-    overflow: hidden;
-    /* Shows through the layers' feathered edges and covers aspect ratios the
-       photo can't fill. */
-    background: linear-gradient(180deg, var(--sky-mid), var(--sky-low));
-}
-
-/* Three slices of one photograph, each drifting at its own rate. Scaled up so
-   the drift never pulls an edge into frame. */
-.backdrop__layer {
-    position: absolute;
-    inset: 0;
-    background: center / cover no-repeat;
-    scale: 1.08;
-    will-change: translate;
-}
-
-.backdrop__layer:nth-child(1) {
-    background-image: url("images/mountains-sky.webp");
-}
-
-.backdrop__layer:nth-child(2) {
-    background-image: url("images/mountains-peaks.webp");
-}
-
-.backdrop__layer:nth-child(3) {
-    background-image: url("images/mountains-fog.webp");
+    /* Gradient underneath covers the aspect ratios the photo can't fill. */
+    background:
+        url("images/mountains.webp") center / cover no-repeat,
+        linear-gradient(180deg, var(--sky-mid), var(--sky-low));
 }
 
 /* Darkens the sky just enough for the chrome pills to hold contrast, and sinks
