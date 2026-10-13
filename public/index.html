@@ -40,10 +40,12 @@
         <h1 class="visually-hidden">Dylan James Gordon, game designer</h1>
 
         <!-- Project rail. The track slides so the selected card sits centred;
-             JS publishes each card's distance from centre and CSS scales on it. -->
+             JS publishes each card's distance from centre and CSS scales on it.
+             Selecting the centred card opens its data-overview dialog; the
+             backdrop swaps to data-backdrop, or a tint of the card art if unset. -->
         <div class="gallery">
             <ul class="gallery__track" id="track" aria-label="Projects">
-                <li class="card" data-title="This Website">
+                <li class="card" data-title="This Website" data-overview="overview-website" data-backdrop="images/mountains.webp">
                     <button class="card__face" type="button">
                         <span class="card__art" data-art="1"></span>
                         <span class="card__meta">
@@ -54,7 +56,7 @@
                     </button>
                 </li>
 
-                <li class="card" data-title="Rap Wizards">
+                <li class="card" data-title="Rap Wizards" data-overview="overview-rap-wizards">
                     <button class="card__face" type="button">
                         <span class="card__art" data-art="2"></span>
                         <span class="card__meta">
@@ -65,7 +67,7 @@
                     </button>
                 </li>
 
-                <li class="card" data-title="Studio Pending">
+                <li class="card" data-title="Studio Pending" data-overview="overview-studio-pending">
                     <button class="card__face" type="button">
                         <span class="card__art" data-art="3"></span>
                         <span class="card__meta">
@@ -81,7 +83,7 @@
 
     <!-- In-page resume. The frame has no src until first opened, so the PDF
          costs nothing on initial load. -->
-    <dialog class="viewer" id="resume-viewer" aria-label="Resume">
+    <dialog class="viewer viewer--document" id="resume-viewer" aria-label="Resume">
         <div class="viewer__bar">
             <span class="tab">Resume</span>
             <a class="tab" href="resume.pdf" download="Dylan James Gordon Resume.pdf">Download</a>
@@ -90,6 +92,83 @@
         <iframe class="viewer__frame" title="Resume" data-src="resume.pdf#toolbar=0&amp;navpanes=0&amp;view=FitH"></iframe>
     </dialog>
 
+    <!-- Project overviews. Bracketed copy is placeholder to be written. -->
+    <dialog class="viewer viewer--overview" id="overview-website" aria-labelledby="overview-website-title">
+        <div class="viewer__bar">
+            <span class="tab">Overview</span>
+            <button class="tab" type="button" data-close>Close</button>
+        </div>
+        <div class="overview">
+            <div class="overview__hero" data-art="1">Screenshots</div>
+            <div class="overview__body">
+                <h2 class="overview__title" id="overview-website-title">This Website</h2>
+                <p class="overview__role">Designer &amp; Developer <span class="card__engine">HTML · CSS · JavaScript</span></p>
+                <p>The site you're on, designed and built by hand in plain HTML, CSS and JavaScript.</p>
+
+                <h3 class="overview__heading">Highlights</h3>
+                <ul class="overview__list">
+                    <li>A launcher-style project rail with drag, wheel and keyboard control</li>
+                    <li>Backdrops that follow the focused project, loaded only as you approach them</li>
+                    <li>An in-page resume viewer that costs nothing until it's opened</li>
+                </ul>
+
+                <h3 class="overview__heading">Next</h3>
+                <p>A playable physics toy in the about section.</p>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog class="viewer viewer--overview" id="overview-rap-wizards" aria-labelledby="overview-rap-wizards-title">
+        <div class="viewer__bar">
+            <span class="tab">Overview</span>
+            <button class="tab" type="button" data-close>Close</button>
+        </div>
+        <div class="overview">
+            <div class="overview__hero" data-art="2">Key art / trailer</div>
+            <div class="overview__body">
+                <h2 class="overview__title" id="overview-rap-wizards-title">Rap Wizards</h2>
+                <p class="overview__role">Solo Developer <span class="card__engine">Unreal Engine</span></p>
+                <p>[What the game is and what makes it fun, in a sentence or two.]</p>
+
+                <h3 class="overview__heading">What I do</h3>
+                <ul class="overview__list">
+                    <li>Programming and gameplay systems</li>
+                    <li>Level design and narrative</li>
+                    <li>3D modeling, rigging and texturing</li>
+                </ul>
+
+                <h3 class="overview__heading">Status</h3>
+                <p>Vertical slice in progress.</p>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog class="viewer viewer--overview" id="overview-studio-pending" aria-labelledby="overview-studio-pending-title">
+        <div class="viewer__bar">
+            <span class="tab">Overview</span>
+            <button class="tab" type="button" data-close>Close</button>
+        </div>
+        <div class="overview">
+            <div class="overview__hero" data-art="3">Key art / trailer</div>
+            <div class="overview__body">
+                <h2 class="overview__title" id="overview-studio-pending-title">Studio Pending</h2>
+                <p class="overview__role">Technical Director <span class="card__engine">Unreal Engine</span></p>
+                <p>[What the studio is making, in a sentence or two.]</p>
+
+                <h3 class="overview__heading">What I do</h3>
+                <ul class="overview__list">
+                    <li>Lead programming and technical direction, alongside the game director</li>
+                    <li>Run team meetings and keep the project on schedule</li>
+                </ul>
+
+                <h3 class="overview__heading">Team</h3>
+                <p>[Team size and disciplines.]</p>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- backdrop.js listens for the rail's first render, so it must run before gallery.js. -->
+    <script src="backdrop.js" type="module"></script>
     <script src="gallery.js" type="module"></script>
     <script src="viewer.js" type="module"></script>
 </body>

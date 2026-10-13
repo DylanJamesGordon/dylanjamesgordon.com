@@ -8,6 +8,7 @@
  *
  * Only --shift (on the track) and --dist (per card) are published to CSS; the
  * scaling curve lives in styles.css so it can be retuned independently.
+ * Position is also broadcast as a 'railmove' event on the track.
  */
 
 const WHEEL_THRESHOLD = 24;
@@ -46,6 +47,9 @@ function render() {
     });
 
     label.textContent = cards[nearest].dataset.title;
+
+    // For anything else that follows the rail, such as the backdrop.
+    track.dispatchEvent(new CustomEvent('railmove', { detail: { position } }));
 }
 
 function goTo(index) {
@@ -96,7 +100,10 @@ track.addEventListener('pointercancel', endDrag);
 cards.forEach((card, index) => {
     card.querySelector('.card__face').addEventListener('click', () => {
         if (track.dataset.dragged) return;      // released from a drag, not a tap
-        goTo(index);
+
+        // A side card comes to centre; the centred card opens its overview.
+        if (index !== Math.round(position)) goTo(index);
+        else document.getElementById(card.dataset.overview)?.showModal();
     });
 });
 

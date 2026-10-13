@@ -102,6 +102,30 @@ body {
         linear-gradient(180deg, var(--sky-mid), var(--sky-low));
 }
 
+/* One per project, added by backdrop.js and crossfaded as the rail moves. The
+   base photo above stays underneath as the no-JS fallback. */
+.backdrop__layer {
+    position: absolute;
+    inset: 0;
+    background: center / cover no-repeat;
+    opacity: 0;
+    transition: opacity 700ms var(--ease);
+}
+
+.backdrop__layer[data-active] {
+    opacity: 1;
+}
+
+/* Stand-in until a project has key art: the house photo washed in its card
+   colours, so the swap still reads. */
+.backdrop__layer[data-art] {
+    background:
+        linear-gradient(165deg,
+            color-mix(in srgb, var(--art-a) 72%, transparent),
+            color-mix(in srgb, var(--art-b) 72%, transparent)),
+        url("images/mountains.webp") center / cover no-repeat;
+}
+
 /* Darkens the sky just enough for the chrome tabs to hold contrast, and sinks
    the corners so the rail reads as the brightest thing on the page. */
 .backdrop__scrim {
@@ -306,24 +330,25 @@ a.tab:focus-visible {
     outline-offset: 3px;
 }
 
-/* Placeholder art. Swap these backgrounds for real captures when they exist. */
+/* Placeholder art. Swap these backgrounds for real captures when they exist.
+   The palettes are shared with the backdrop and overview stand-ins. */
 .card__art {
     position: absolute;
     inset: 0;
     background: linear-gradient(165deg, var(--art-a), var(--art-b));
 }
 
-.card__art[data-art="1"] {
+[data-art="1"] {
     --art-a: #2b3a46;
     --art-b: #8a4a3d;
 }
 
-.card__art[data-art="2"] {
+[data-art="2"] {
     --art-a: #27343d;
     --art-b: #3f6b74;
 }
 
-.card__art[data-art="3"] {
+[data-art="3"] {
     --art-a: #222a30;
     --art-b: #4a4f63;
 }
@@ -368,14 +393,11 @@ a.tab:focus-visible {
 }
 
 /* =============================================================================
-   Viewer — in-page document dialog
+   Viewer — in-page dialogs: the resume and project overviews
    ========================================================================== */
 
 .viewer {
     --bar-h: 2rem;
-    /* Sized to a letter page so the PDF fits without letterboxing. */
-    height: min(92svh, 72rem);
-    width: min(92vw, calc((min(92svh, 72rem) - var(--bar-h)) * 8.5 / 11));
     padding: 0;
     border: 1px solid var(--glass-edge);
     border-radius: 4px;
@@ -392,6 +414,20 @@ a.tab:focus-visible {
 
 .viewer::backdrop {
     background: rgb(6 16 20 / 72%);
+}
+
+/* Sized to a letter page so the PDF fits without letterboxing. */
+.viewer--document {
+    height: min(92svh, 72rem);
+    width: min(92vw, calc((min(92svh, 72rem) - var(--bar-h)) * 8.5 / 11));
+}
+
+/* Grows with its content up to a cap, then scrolls inside. Near-opaque, since
+   it carries body copy rather than a page that brings its own background. */
+.viewer--overview {
+    width: min(46rem, 92vw);
+    max-height: 88svh;
+    background: rgb(12 18 22 / 94%);
 }
 
 .viewer__bar {
@@ -443,6 +479,70 @@ button.tab:focus-visible {
     background: transparent;
 }
 
+/* ---- Overview content ---------------------------------------------------- */
+
+.overview {
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--hairline) transparent;
+}
+
+/* Stand-in for key art or a trailer: the card's palette at 16:9. */
+.overview__hero {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(165deg, var(--art-a), var(--art-b));
+    color: var(--ink-dim);
+    font-size: var(--step--1);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.overview__body {
+    padding: 1.5rem 1.75rem 2rem;
+    color: var(--ink-dim);
+    font-size: var(--step-0);
+    line-height: 1.65;
+}
+
+.overview__body p {
+    margin: 0;
+}
+
+.overview__title {
+    margin: 0;
+    color: var(--ink);
+    font-size: 1.75rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+}
+
+.overview__body .overview__role {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    color: var(--ink);
+}
+
+/* Matches .card__engine, so the overview reads as the card opened up. */
+.overview__heading {
+    margin: 1.5rem 0 0.4rem;
+    color: var(--ink-dim);
+    font-size: 0.625rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+.overview__list {
+    margin: 0;
+    padding-left: 1.1rem;
+}
+
 /* =============================================================================
    Responsive & motion
    ========================================================================== */
@@ -466,6 +566,7 @@ button.tab:focus-visible {
 
 @media (prefers-reduced-motion: reduce) {
 
+    .backdrop__layer,
     .gallery__track,
     .card,
     .card__face,
