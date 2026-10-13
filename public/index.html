@@ -4,110 +4,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dylan James Gordon</title>
-
-    <style>
-        /* ---- Design tokens -------------------------------------------------
-           The aesthetic lives here. Changing these values restyles the whole
-           page, so the visual direction can be swapped without touching markup. */
-        :root {
-            --bg: #0b0b0c;
-            --fg: #e8e8ea;
-            --muted: #8a8a93;
-            --accent: #e8e8ea;
-
-            --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-
-            --step-0: 1rem;
-            --step-1: 1.25rem;
-            --step-2: clamp(2rem, 6vw, 3.5rem);
-
-            --measure: 65ch;
-            --gutter: clamp(1.25rem, 5vw, 3rem);
-        }
-
-        /* ---- Base ---------------------------------------------------------- */
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            background: var(--bg);
-            color: var(--fg);
-            font-family: var(--font);
-            font-size: var(--step-0);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* ---- Layout -------------------------------------------------------- */
-        .shell {
-            max-width: var(--measure);
-            margin-inline: auto;
-            padding: var(--gutter);
-            min-height: 100svh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 1rem;
-        }
-
-        /* ---- Type ---------------------------------------------------------- */
-        h1 {
-            margin: 0;
-            font-size: var(--step-2);
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            line-height: 1.1;
-        }
-
-        .tagline {
-            margin: 0;
-            font-size: var(--step-1);
-            color: var(--muted);
-        }
-
-        /* ---- Links --------------------------------------------------------- */
-        .links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            margin-top: 1rem;
-            padding: 0;
-            list-style: none;
-        }
-
-        a {
-            color: var(--accent);
-            text-decoration-color: var(--muted);
-            text-underline-offset: 0.25em;
-        }
-
-        a:hover {
-            text-decoration-color: currentColor;
-        }
-
-        a:focus-visible {
-            outline: 2px solid var(--accent);
-            outline-offset: 3px;
-            border-radius: 2px;
-        }
-    </style>
+    <title>Dylan James Gordon — Game Developer</title>
+    <meta name="description" content="Game developer and designer. Systems, level design, and interactive work.">
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <main class="shell">
-        <h1>Dylan James Gordon</h1>
-        <p class="tagline">Game developer. Portfolio in progress.</p>
+    <!-- Atmospheric backdrop. Purely decorative, so it's hidden from assistive tech. -->
+    <div class="backdrop" aria-hidden="true">
+        <!-- Two ridges at different depths; the far one is hazier, which is what
+             sells the distance. -->
+        <svg class="backdrop__ridge backdrop__ridge--far" viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <path d="M0,320 L0,272 L180,238 L330,264 L470,206 L620,248 L760,188
+                     L900,240 L1060,200 L1230,252 L1440,224 L1440,320 Z" />
+        </svg>
 
-        <ul class="links">
-            <li><a href="https://www.linkedin.com/in/dylanjamesgordon/">LinkedIn</a></li>
-            <li><a href="mailto:dylanjamesgordon15@gmail.com">Email</a></li>
+        <svg class="backdrop__ridge backdrop__ridge--near" viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <path d="M0,320 L0,298 L220,272 L430,216 L560,160 L660,100 L720,68
+                     L790,118 L880,180 L1010,232 L1210,280 L1440,300 L1440,320 Z" />
+        </svg>
+
+        <div class="backdrop__haze"></div>
+    </div>
+
+    <header class="chrome">
+        <div class="chrome__group">
+            <span class="pill">Dylan James Gordon</span>
+            <span class="pill pill--muted">Game Developer</span>
+        </div>
+
+        <!-- Mirrors the focused card so the carousel reads as part of the UI, not a separate widget. -->
+        <div class="chrome__group chrome__group--center">
+            <output class="pill" id="focus-label" for="gallery">Heavy Metal</output>
+        </div>
+
+        <nav class="chrome__group" aria-label="Links">
+            <a class="pill" href="resume.pdf">Resume</a>
+            <a class="pill" href="https://www.linkedin.com/in/dylanjamesgordon/">LinkedIn</a>
+            <a class="pill" href="mailto:dylanjamesgordon15@gmail.com">Email</a>
+        </nav>
+    </header>
+
+    <main>
+        <h1 class="visually-hidden">Dylan James Gordon, game developer</h1>
+
+        <!-- Arc gallery. JS assigns each card an offset from center; CSS derives the transform. -->
+        <ul class="gallery" id="gallery" aria-label="Projects">
+            <li class="card" data-title="Heavy Metal">
+                <button class="card__face" type="button">
+                    <span class="card__art" data-art="1"></span>
+                    <span class="card__meta">
+                        <span class="card__title">Heavy Metal</span>
+                        <span class="card__tag">Unreal · Systems &amp; Level Design</span>
+                    </span>
+                </button>
+            </li>
+
+            <li class="card" data-title="Realm Sim">
+                <button class="card__face" type="button">
+                    <span class="card__art" data-art="2"></span>
+                    <span class="card__meta">
+                        <span class="card__title">Realm Sim</span>
+                        <span class="card__tag">Unity · Interactive Comic</span>
+                    </span>
+                </button>
+            </li>
+
+            <li class="card" data-title="Untitled">
+                <button class="card__face" type="button">
+                    <span class="card__art" data-art="3"></span>
+                    <span class="card__meta">
+                        <span class="card__title">Untitled</span>
+                        <span class="card__tag">In development</span>
+                    </span>
+                </button>
+            </li>
         </ul>
     </main>
+
+    <script src="gallery.js" type="module"></script>
 </body>
 
 </html>

@@ -1,0 +1,317 @@
+/* =============================================================================
+   Tokens
+   The whole look is driven from here. Arc geometry lives alongside color so the
+   gallery can be retuned without touching the transform math in .card.
+   ========================================================================== */
+
+:root {
+    /* Atmosphere */
+    --sky-high: #9ab0bb;
+    --sky-mid: #718a97;
+    --sky-low: #4e636d;
+    --ridge: #1d252b;
+
+    /* Ink */
+    --ink: #eef3f6;
+    --ink-dim: #b3c2cb;
+
+    /* Surfaces */
+    --glass: rgb(16 22 27 / 55%);
+    --glass-edge: rgb(238 243 246 / 14%);
+
+    /* Type */
+    --mono: ui-monospace, "SF Mono", "Cascadia Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+    --step--1: 0.6875rem;
+    --step-0: 0.8125rem;
+    --step-1: 1rem;
+
+    /* Arc geometry. Each card sits at --offset steps from center; --dist is its
+       absolute value. Edge cards drop, shrink, and fade by these factors. */
+    --card-w: clamp(7rem, 13vw, 11rem);
+    --arc-gap: calc(var(--card-w) * 0.92);
+    --arc-dip: 2.2rem;
+    --arc-tilt: 2.4deg;
+    --arc-shrink: 0.08;
+    --arc-fade: 0.22;
+
+    --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+    --speed: 520ms;
+}
+
+/* =============================================================================
+   Base
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100svh;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    background: var(--sky-low);
+    color: var(--ink);
+    font-family: var(--mono);
+    font-size: var(--step-0);
+    line-height: 1.5;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+/* =============================================================================
+   Backdrop
+   ========================================================================== */
+
+.backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+        radial-gradient(120% 70% at 50% 8%, rgb(255 255 255 / 10%), transparent 60%),
+        linear-gradient(180deg, var(--sky-high) 0%, var(--sky-mid) 45%, var(--sky-low) 100%);
+}
+
+.backdrop__ridge {
+    position: absolute;
+    inset: auto 0 0;
+    width: 100%;
+    fill: var(--ridge);
+}
+
+.backdrop__ridge--far {
+    height: min(30vh, 17rem);
+    opacity: 0.3;
+    filter: blur(1.5px);
+}
+
+.backdrop__ridge--near {
+    height: min(52vh, 30rem);
+    opacity: 0.86;
+}
+
+/* Thins the ridge bases back toward the sky so they sit in air rather than
+   ending on a hard cut. Kept subtle; too much and the whole frame greys out. */
+.backdrop__haze {
+    position: absolute;
+    inset: auto 0 0;
+    height: min(30vh, 17rem);
+    background: linear-gradient(180deg, transparent, rgb(122 148 161 / 22%));
+}
+
+/* =============================================================================
+   Chrome — the status-bar style header
+   ========================================================================== */
+
+.chrome {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+}
+
+.chrome__group {
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+}
+
+.chrome__group--center {
+    /* Holds the center slot steady regardless of how wide the side groups get. */
+    position: absolute;
+    left: 50%;
+    translate: -50% 0;
+}
+
+.pill {
+    padding: 0.3rem 0.7rem;
+    border: 1px solid var(--glass-edge);
+    border-radius: 999px;
+    background: var(--glass);
+    color: var(--ink);
+    font-size: var(--step--1);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    white-space: nowrap;
+    backdrop-filter: blur(10px);
+    transition: background var(--speed) var(--ease), border-color var(--speed) var(--ease);
+}
+
+.pill--muted {
+    color: var(--ink-dim);
+}
+
+a.pill:hover,
+a.pill:focus-visible {
+    background: rgb(238 243 246 / 16%);
+    border-color: rgb(238 243 246 / 34%);
+}
+
+/* =============================================================================
+   Gallery — the arc
+   ========================================================================== */
+
+.gallery {
+    position: relative;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.card {
+    /* inset + auto margins center every card on the same point; the arc is then
+       expressed purely as a translate away from that center. */
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: var(--card-w);
+    aspect-ratio: 9 / 16;
+
+    /* Defaults so the first paint is already centered, before JS runs. */
+    --offset: 0;
+    --dist: 0;
+    --lift: 0rem;
+    transition: translate var(--speed) var(--ease), scale var(--speed) var(--ease),
+        rotate var(--speed) var(--ease), opacity var(--speed) var(--ease);
+
+    /* Arc placement, derived entirely from --offset / --dist set by gallery.js. */
+    translate: calc(var(--offset) * var(--arc-gap))
+               calc(var(--dist) * var(--dist) * var(--arc-dip) - var(--lift));
+    rotate: calc(var(--offset) * var(--arc-tilt));
+    scale: calc(1 - var(--dist) * var(--arc-shrink));
+    opacity: calc(1 - var(--dist) * var(--arc-fade));
+    z-index: calc(100 - var(--dist));
+}
+
+/* The focused card lifts clear of the fan and sheds the depth falloff, so the
+   arc stays put while attention moves. */
+.card[data-focused] {
+    --lift: 1.5rem;
+    scale: calc(1 - var(--dist) * var(--arc-shrink) + 0.09);
+    opacity: 1;
+    z-index: 200;
+}
+
+.card__face {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 1px solid var(--glass-edge);
+    border-radius: 4px;
+    background: var(--glass);
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    overflow: hidden;
+    box-shadow: 0 1.5rem 3rem rgb(8 12 15 / 35%);
+    transition: border-color var(--speed) var(--ease), box-shadow var(--speed) var(--ease);
+}
+
+.card[data-focused] .card__face {
+    border-color: rgb(238 243 246 / 38%);
+    box-shadow: 0 2rem 4rem rgb(8 12 15 / 50%);
+}
+
+.card__face:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 3px;
+}
+
+/* Placeholder art. Swap these backgrounds for real captures when they exist. */
+.card__art {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(165deg, var(--art-a), var(--art-b));
+}
+
+.card__art[data-art="1"] {
+    --art-a: #2b3a46;
+    --art-b: #8a4a3d;
+}
+
+.card__art[data-art="2"] {
+    --art-a: #27343d;
+    --art-b: #3f6b74;
+}
+
+.card__art[data-art="3"] {
+    --art-a: #222a30;
+    --art-b: #4a4f63;
+}
+
+/* Cards overlap by design, so only the focused one captions itself. Otherwise
+   neighbouring titles collide in the stack. Overlaid rather than stacked below
+   the art, so unfocused cards show artwork edge to edge. */
+.card__meta {
+    position: absolute;
+    inset: auto 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 2rem 0.7rem 0.7rem;
+    background: linear-gradient(180deg, transparent, rgb(10 14 17 / 82%) 55%);
+    opacity: 0;
+    transition: opacity var(--speed) var(--ease);
+}
+
+.card[data-focused] .card__meta {
+    opacity: 1;
+}
+
+.card__title {
+    font-size: var(--step-0);
+}
+
+.card__tag {
+    color: var(--ink-dim);
+    font-size: var(--step--1);
+}
+
+/* =============================================================================
+   Responsive & motion
+   ========================================================================== */
+
+@media (width <= 40rem) {
+    :root {
+        --card-w: clamp(8rem, 44vw, 13rem);
+        --arc-gap: calc(var(--card-w) * 0.62);
+    }
+
+    /* Side groups would collide with the center slot at this width. */
+    .chrome__group--center {
+        display: none;
+    }
+
+    .chrome {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .card,
+    .pill,
+    .card__face {
+        transition-duration: 1ms;
+    }
+}
