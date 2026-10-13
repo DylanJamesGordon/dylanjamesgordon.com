@@ -26,7 +26,7 @@
 
         <!-- Mirrors the selected project so the dial reads as part of the UI, not a separate widget. -->
         <div class="chrome__group chrome__group--center">
-            <output class="tab" id="focus-label" for="track">Rap Wizards</output>
+            <output class="tab" id="focus-label" for="dial-wheel">Rap Wizards</output>
         </div>
 
         <nav class="chrome__group chrome__group--links" aria-label="Links">
@@ -66,7 +66,7 @@
              swaps to data-backdrop, or a tint of the data-art palette if unset. -->
         <div class="dial">
             <div class="dial__ring" aria-hidden="true"></div>
-            <ul class="dial__wheel" id="track" aria-label="Projects">
+            <ul class="dial__wheel" id="dial-wheel" aria-label="Projects">
                 <li class="spoke" style="--i: 0" data-title="This Website"
                     data-backdrop="images/mountains.webp" data-art="1">
                     <button class="spoke__bar" type="button">This Website</button>
@@ -92,7 +92,7 @@
         <iframe class="viewer__frame" title="Resume" data-src="resume.pdf#toolbar=0&amp;navpanes=0&amp;view=FitH"></iframe>
     </dialog>
 
-    <!-- backdrop.js listens for the rail's first render, so it must run before dial.js. -->
+    <!-- backdrop.js listens for the dial's first render, so it must run before dial.js. -->
     <script src="backdrop.js" type="module"></script>
     <script src="dial.js" type="module"></script>
     <script src="viewer.js" type="module"></script>

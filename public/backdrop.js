@@ -1,16 +1,16 @@
 /**
  * Project backdrops.
  *
- * One layer per card, stacked in the backdrop and crossfaded so the focused
- * project's art fills the page. A card's data-backdrop image is fetched only
- * once that card is within one step of centre, so the landing page loads a
- * single image. Cards without one get a tint of their card art instead.
+ * One layer per project, stacked in the backdrop and crossfaded so the selected
+ * project's art fills the page. A project's data-backdrop image is fetched
+ * only once its bar is within one step of the crown, so the landing page loads
+ * a single image. Projects without one get a tint of their palette instead.
  */
 
-const track = document.querySelector('#track');
+const wheel = document.querySelector('#dial-wheel');
 const backdrop = document.querySelector('.backdrop');
 const scrim = backdrop.querySelector('.backdrop__scrim');
-const projects = [...track.querySelectorAll('.spoke')];
+const projects = [...wheel.querySelectorAll('.spoke')];
 
 const layers = projects.map((project) => {
     const layer = document.createElement('div');
@@ -20,7 +20,7 @@ const layers = projects.map((project) => {
     return layer;
 });
 
-track.addEventListener('railmove', ({ detail: { position } }) => {
+wheel.addEventListener('dialturn', ({ detail: { position } }) => {
     const nearest = Math.round(position);
 
     layers.forEach((layer, index) => {

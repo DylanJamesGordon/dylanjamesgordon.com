@@ -100,7 +100,7 @@ body {
         linear-gradient(180deg, var(--sky-mid), var(--sky-low));
 }
 
-/* One per project, added by backdrop.js and crossfaded as the rail moves. The
+/* One per project, added by backdrop.js and crossfaded as the dial turns. The
    base photo above stays underneath as the no-JS fallback. */
 .backdrop__layer {
     position: absolute;
@@ -125,7 +125,7 @@ body {
 }
 
 /* Darkens the sky just enough for the chrome tabs to hold contrast, and sinks
-   the corners so the rail reads as the brightest thing on the page. */
+   the corners so the stage reads as the brightest thing on the page. */
 .backdrop__scrim {
     position: absolute;
     inset: 0;

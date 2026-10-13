@@ -8,7 +8,7 @@
  *
  * Only --turn (on the wheel) and --dist (per bar) are published to CSS; the
  * geometry lives in styles.css so it can be retuned independently. Position
- * is also broadcast as a 'railmove' event on the wheel.
+ * is also broadcast as a 'dialturn' event on the wheel.
  */
 
 const WHEEL_THRESHOLD = 24;
@@ -16,7 +16,7 @@ const WHEEL_COOLDOWN = 320;
 const DRAG_SLOP = 6;        // px of travel before a press counts as a drag
 
 const dial = document.querySelector('.dial');
-const wheel = document.querySelector('#track');
+const wheel = document.querySelector('#dial-wheel');
 const ring = dial.querySelector('.dial__ring');
 const label = document.querySelector('#focus-label');
 const spokes = [...wheel.querySelectorAll('.spoke')];
@@ -57,7 +57,7 @@ function render() {
     label.textContent = spokes[nearest].dataset.title;
 
     // For anything else that follows the dial, such as the backdrop.
-    wheel.dispatchEvent(new CustomEvent('railmove', { detail: { position } }));
+    wheel.dispatchEvent(new CustomEvent('dialturn', { detail: { position } }));
 }
 
 function goTo(index) {
