@@ -111,8 +111,10 @@ body {
     justify-content: space-between;
     align-items: start;
     gap: 1rem;
-    /* No top padding: the bar sits flush against the top edge. */
-    padding: 0 1.25rem;
+    /* Flush on all three edges. Any side padding leaves a dead strip of bar
+       beyond the end tabs, which makes those tabs read as off-centre even
+       though their text is centred within them. */
+    padding: 0;
 }
 
 /* The bar itself: one band spanning the full width, dissolving downward into
