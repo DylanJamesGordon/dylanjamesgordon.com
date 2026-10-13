@@ -59,7 +59,6 @@ let drag = null;
 
 track.addEventListener('pointerdown', (event) => {
     drag = { id: event.pointerId, x: event.clientX, from: position, moved: false };
-    track.setPointerCapture(event.pointerId);
 });
 
 track.addEventListener('pointermove', (event) => {
@@ -69,6 +68,9 @@ track.addEventListener('pointermove', (event) => {
     if (!drag.moved && Math.abs(dx) > DRAG_SLOP) {
         drag.moved = true;
         track.classList.add('is-dragging');
+        // Captured only once it's a drag: capture retargets the click to the
+        // track, so capturing on press would stop taps reaching the cards.
+        track.setPointerCapture(event.pointerId);
     }
     if (!drag.moved) return;
 
