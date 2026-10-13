@@ -1,7 +1,7 @@
 /* =============================================================================
    Tokens
-   The whole look is driven from here. Arc geometry lives alongside color so the
-   gallery can be retuned without touching the transform math in .card.
+   The whole look is driven from here. Rail geometry lives alongside colour so
+   the gallery can be retuned without touching the transform math in .card.
    ========================================================================== */
 
 :root {
@@ -23,16 +23,15 @@
     --step-0: 0.8125rem;
     --step-1: 1rem;
 
-    /* Arc geometry. Each card sits at --offset steps from center; --dist is its
-       absolute value. Edge cards drop, shrink, and fade by these factors. */
+    /* Rail geometry. Each card sits at --offset steps from center; --dist is its
+       absolute value. Cards sit on one horizontal line and shrink toward the
+       edges, so size alone carries the depth. */
     --card-w: clamp(7rem, 13vw, 11rem);
-    --arc-gap: calc(var(--card-w) * 0.92);
-    --arc-dip: 2.2rem;
-    --arc-tilt: 2.4deg;
-    --arc-shrink: 0.08;
+    --rail-gap: calc(var(--card-w) * 0.92);
+    --rail-shrink: 0.14;
     /* Kept low: against a photo backdrop, faded cards go muddy rather than
-       distant. Depth comes from scale and the dip instead. */
-    --arc-fade: 0.1;
+       distant. */
+    --rail-fade: 0.1;
 
     --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
     --speed: 520ms;
@@ -88,7 +87,7 @@ body {
 }
 
 /* Darkens the sky just enough for the chrome pills to hold contrast, and sinks
-   the corners so the arc reads as the brightest thing on the page. */
+   the corners so the rail reads as the brightest thing on the page. */
 .backdrop__scrim {
     position: absolute;
     inset: 0;
@@ -147,7 +146,7 @@ a.pill:focus-visible {
 }
 
 /* =============================================================================
-   Gallery — the arc
+   Gallery — the rail
    ========================================================================== */
 
 .gallery {
@@ -159,8 +158,8 @@ a.pill:focus-visible {
 }
 
 .card {
-    /* inset + auto margins center every card on the same point; the arc is then
-       expressed purely as a translate away from that center. */
+    /* inset + auto margins center every card on the same point; the rail is
+       then expressed purely as a translate away from that center. */
     position: absolute;
     inset: 0;
     margin: auto;
@@ -170,24 +169,19 @@ a.pill:focus-visible {
     /* Defaults so the first paint is already centered, before JS runs. */
     --offset: 0;
     --dist: 0;
-    --lift: 0rem;
     transition: translate var(--speed) var(--ease), scale var(--speed) var(--ease),
-        rotate var(--speed) var(--ease), opacity var(--speed) var(--ease);
+        opacity var(--speed) var(--ease);
 
-    /* Arc placement, derived entirely from --offset / --dist set by gallery.js. */
-    translate: calc(var(--offset) * var(--arc-gap))
-               calc(var(--dist) * var(--dist) * var(--arc-dip) - var(--lift));
-    rotate: calc(var(--offset) * var(--arc-tilt));
-    scale: calc(1 - var(--dist) * var(--arc-shrink));
-    opacity: calc(1 - var(--dist) * var(--arc-fade));
+    /* Rail placement, derived entirely from --offset / --dist set by gallery.js. */
+    translate: calc(var(--offset) * var(--rail-gap));
+    scale: calc(1 - var(--dist) * var(--rail-shrink));
+    opacity: calc(1 - var(--dist) * var(--rail-fade));
     z-index: calc(100 - var(--dist));
 }
 
-/* The focused card lifts clear of the fan and sheds the depth falloff, so the
-   arc stays put while attention moves. */
+/* Focus reads as size and full opacity; the card stays on the rail. */
 .card[data-focused] {
-    --lift: 1.5rem;
-    scale: calc(1 - var(--dist) * var(--arc-shrink) + 0.09);
+    scale: calc(1 - var(--dist) * var(--rail-shrink) + 0.1);
     opacity: 1;
     z-index: 200;
 }
@@ -277,7 +271,7 @@ a.pill:focus-visible {
 @media (width <= 40rem) {
     :root {
         --card-w: clamp(8rem, 44vw, 13rem);
-        --arc-gap: calc(var(--card-w) * 0.62);
+        --rail-gap: calc(var(--card-w) * 0.62);
     }
 
     /* Side groups would collide with the center slot at this width. */

@@ -1,13 +1,13 @@
 /**
- * Arc gallery.
+ * Project rail.
  *
- * The arc itself is fixed: each card sits at a permanent --offset from the
- * centre of the fan, so the composition stays symmetric. Focusing a card lifts
- * it out of the arc rather than sliding the whole group, which keeps small sets
- * (two or three projects) from looking lopsided.
+ * The rail itself is fixed: each card sits at a permanent --offset from the
+ * centre, so the composition stays symmetric. Focusing a card scales it up in
+ * place rather than sliding the whole group, which keeps small sets (two or
+ * three projects) from looking lopsided.
  *
  * Only --offset and --dist are published to CSS; the transform math lives in
- * styles.css so the arc can be retuned without touching this file.
+ * styles.css so the rail can be retuned without touching this file.
  */
 
 const WHEEL_THRESHOLD = 24;
@@ -26,11 +26,11 @@ function focus(index) {
     render();
 }
 
-const arcCenter = (cards.length - 1) / 2;
+const railCenter = (cards.length - 1) / 2;
 
 function render() {
     cards.forEach((card, index) => {
-        const offset = index - arcCenter;
+        const offset = index - railCenter;
 
         card.style.setProperty('--offset', offset);
         card.style.setProperty('--dist', Math.abs(offset));
