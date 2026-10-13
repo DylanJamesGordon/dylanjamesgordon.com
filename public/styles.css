@@ -268,8 +268,11 @@ a.tab:focus-visible {
     grid-area: 1 / 1;
     display: grid;
     justify-items: start;
-    gap: 0.6rem;
-    max-width: 34rem;
+    align-content: center;
+    max-width: 36rem;
+    /* Sits straight on the photo, so a soft shadow keeps it legible on
+       bright art. */
+    text-shadow: 0 0.1rem 1rem rgb(6 16 20 / 55%);
     opacity: 0;
     translate: 0 0.75rem;
     transition: opacity var(--speed) var(--ease), translate var(--speed) var(--ease);
@@ -286,45 +289,45 @@ a.tab:focus-visible {
     font-weight: 600;
     letter-spacing: -0.025em;
     line-height: 1;
-    text-shadow: 0 0.25rem 2rem rgb(6 16 20 / 45%);
 }
 
 .hero__role {
     display: flex;
     align-items: baseline;
     gap: 0.75rem;
-    margin: 0;
+    margin: 0.6rem 0 0;
     font-size: var(--step-1);
 }
 
 .hero__pitch {
-    margin: 0.4rem 0 0.8rem;
-    color: var(--ink-dim);
+    margin: 1rem 0 0;
     line-height: 1.6;
 }
 
-.hero__open {
-    padding: 0.55rem 1.1rem;
-    border: 1px solid var(--hairline);
-    border-radius: 999px;
-    background: var(--glass);
-    color: var(--ink);
-    font: inherit;
-    font-size: var(--step--1);
-    letter-spacing: 0.04em;
-    cursor: pointer;
-    transition: background var(--speed) var(--ease), border-color var(--speed) var(--ease);
+.hero p {
+    margin-block-end: 0;
 }
 
-.hero__open:hover,
-.hero__open:focus-visible {
-    border-color: var(--ink);
-    background: rgb(238 243 246 / 14%);
+/* Matches .meta-label, so section heads read as part of the same system. */
+.hero__heading {
+    margin: 1.5rem 0 0.4rem;
+    color: var(--ink-dim);
+    font-size: 0.625rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
 }
 
-.hero__open:focus-visible {
-    outline: 1px solid var(--ink);
-    outline-offset: 2px;
+.hero__heading + p {
+    margin-top: 0;
+    color: var(--ink-dim);
+}
+
+.hero__list {
+    margin: 0;
+    padding-left: 1.1rem;
+    color: var(--ink-dim);
+    line-height: 1.65;
 }
 
 /* Tooling, as a quieter label beside the role: what you did reads first,
@@ -442,7 +445,7 @@ a.tab:focus-visible {
     outline-offset: 3px;
 }
 
-/* Placeholder art palettes, shared by the backdrop and overview stand-ins.
+/* Placeholder art palettes, used by the backdrop stand-ins.
    Swap for real captures when they exist. */
 [data-art="1"] {
     --art-a: #2b3a46;
@@ -460,11 +463,14 @@ a.tab:focus-visible {
 }
 
 /* =============================================================================
-   Viewer — in-page dialogs: the resume and project overviews
+   Viewer — in-page document dialog
    ========================================================================== */
 
 .viewer {
     --bar-h: 2rem;
+    /* Sized to a letter page so the PDF fits without letterboxing. */
+    height: min(92svh, 72rem);
+    width: min(92vw, calc((min(92svh, 72rem) - var(--bar-h)) * 8.5 / 11));
     padding: 0;
     border: 1px solid var(--glass-edge);
     border-radius: 4px;
@@ -481,20 +487,6 @@ a.tab:focus-visible {
 
 .viewer::backdrop {
     background: rgb(6 16 20 / 72%);
-}
-
-/* Sized to a letter page so the PDF fits without letterboxing. */
-.viewer--document {
-    height: min(92svh, 72rem);
-    width: min(92vw, calc((min(92svh, 72rem) - var(--bar-h)) * 8.5 / 11));
-}
-
-/* Grows with its content up to a cap, then scrolls inside. Near-opaque, since
-   it carries body copy rather than a page that brings its own background. */
-.viewer--overview {
-    width: min(46rem, 92vw);
-    max-height: 88svh;
-    background: rgb(12 18 22 / 94%);
 }
 
 .viewer__bar {
@@ -546,70 +538,6 @@ button.tab:focus-visible {
     background: transparent;
 }
 
-/* ---- Overview content ---------------------------------------------------- */
-
-.overview {
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--hairline) transparent;
-}
-
-/* Stand-in for key art or a trailer: the project's palette at 16:9. */
-.overview__hero {
-    display: grid;
-    place-items: center;
-    aspect-ratio: 16 / 9;
-    background: linear-gradient(165deg, var(--art-a), var(--art-b));
-    color: var(--ink-dim);
-    font-size: var(--step--1);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-}
-
-.overview__body {
-    padding: 1.5rem 1.75rem 2rem;
-    color: var(--ink-dim);
-    font-size: var(--step-0);
-    line-height: 1.65;
-}
-
-.overview__body p {
-    margin: 0;
-}
-
-.overview__title {
-    margin: 0;
-    color: var(--ink);
-    font-size: 1.75rem;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    line-height: 1.2;
-}
-
-.overview__body .overview__role {
-    display: flex;
-    align-items: baseline;
-    gap: 0.75rem;
-    margin-bottom: 1.25rem;
-    color: var(--ink);
-}
-
-/* Matches .meta-label, so the overview reads as the pitch opened up. */
-.overview__heading {
-    margin: 1.5rem 0 0.4rem;
-    color: var(--ink-dim);
-    font-size: 0.625rem;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    opacity: 0.7;
-}
-
-.overview__list {
-    margin: 0;
-    padding-left: 1.1rem;
-}
-
 /* =============================================================================
    Responsive & motion
    ========================================================================== */
@@ -640,7 +568,6 @@ button.tab:focus-visible {
 
     .backdrop__layer,
     .hero,
-    .hero__open,
     .dial__wheel,
     .spoke,
     .spoke__bar,

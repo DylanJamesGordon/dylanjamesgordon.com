@@ -1,9 +1,8 @@
 /**
- * In-page dialogs: the resume viewer and the project overviews.
+ * In-page document viewer.
  *
  * Every .viewer dialog closes from its [data-close] button or a click on the
- * backdrop. Buttons with data-dialog open the named dialog. Links with
- * data-viewer open the named dialog instead of
+ * backdrop. Links with data-viewer open the named dialog instead of
  * navigating, and a dialog's frame loads lazily on first open. Phones render
  * PDFs in frames poorly or not at all, so on narrow screens those links are
  * left to navigate.
@@ -18,10 +17,6 @@ document.querySelectorAll('dialog.viewer').forEach((dialog) => {
     dialog.addEventListener('click', (event) => {
         if (event.target === dialog) dialog.close();
     });
-});
-
-document.querySelectorAll('button[data-dialog]').forEach((button) => {
-    button.addEventListener('click', () => document.getElementById(button.dataset.dialog).showModal());
 });
 
 document.querySelectorAll('a[data-viewer]').forEach((link) => {

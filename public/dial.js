@@ -108,10 +108,7 @@ dial.addEventListener('pointercancel', endDrag);
 spokes.forEach((spoke, index) => {
     spoke.querySelector('.spoke__bar').addEventListener('click', () => {
         if (dial.dataset.dragged) return;       // released from a drag, not a tap
-
-        // A side bar turns to the crown; the crowned bar opens its overview.
-        if (index !== Math.round(position)) goTo(index);
-        else document.getElementById(spoke.dataset.overview)?.showModal();
+        goTo(index);
     });
 });
 

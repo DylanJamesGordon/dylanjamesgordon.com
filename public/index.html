@@ -39,45 +39,71 @@
     <main class="stage">
         <h1 class="visually-hidden">Dylan James Gordon, game designer</h1>
 
-        <!-- One pitch per project, in dial order; dial.js shows the selected one. -->
+        <!-- One view per project, in dial order; dial.js shows the selected one
+             over its backdrop. Bracketed copy is placeholder to be written. -->
         <div class="stage__heroes">
             <article class="hero">
                 <h2 class="hero__title">This Website</h2>
                 <p class="hero__role">Designer &amp; Developer <span class="meta-label">HTML · CSS · JavaScript</span></p>
-                <p class="hero__pitch">Designed and built with HTML, CSS and JavaScript.</p>
-                <button class="hero__open" type="button" data-dialog="overview-website">View project</button>
+                <p class="hero__pitch">The site you're on, designed and built with HTML, CSS and JavaScript.</p>
+
+                <h3 class="hero__heading">Highlights</h3>
+                <ul class="hero__list">
+                    <li>A launcher-style project dial with drag, wheel and keyboard control</li>
+                    <li>Backdrops that follow the selected project, loaded only as you approach them</li>
+                    <li>An in-page resume viewer that costs nothing until it's opened</li>
+                </ul>
+
+                <h3 class="hero__heading">Next</h3>
+                <p>A playable physics toy in the about section.</p>
             </article>
 
             <article class="hero">
                 <h2 class="hero__title">Rap Wizards</h2>
                 <p class="hero__role">Solo Developer <span class="meta-label">Unreal Engine</span></p>
-                <p class="hero__pitch">[One-line pitch for the game.]</p>
-                <button class="hero__open" type="button" data-dialog="overview-rap-wizards">View project</button>
+                <p class="hero__pitch">[What the game is and what makes it fun, in a sentence or two.]</p>
+
+                <h3 class="hero__heading">What I do</h3>
+                <ul class="hero__list">
+                    <li>Programming and gameplay systems</li>
+                    <li>Level design and narrative</li>
+                    <li>3D modeling, rigging and texturing</li>
+                </ul>
+
+                <h3 class="hero__heading">Status</h3>
+                <p>Vertical slice in progress.</p>
             </article>
 
             <article class="hero">
                 <h2 class="hero__title">Studio Pending</h2>
                 <p class="hero__role">Technical Director <span class="meta-label">Unreal Engine</span></p>
-                <p class="hero__pitch">[One-line pitch for the studio.]</p>
-                <button class="hero__open" type="button" data-dialog="overview-studio-pending">View project</button>
+                <p class="hero__pitch">[What the studio is making, in a sentence or two.]</p>
+
+                <h3 class="hero__heading">What I do</h3>
+                <ul class="hero__list">
+                    <li>Lead programming and technical direction, alongside the game director</li>
+                    <li>Run team meetings and keep the project on schedule</li>
+                </ul>
+
+                <h3 class="hero__heading">Team</h3>
+                <p>[Team size and disciplines.]</p>
             </article>
         </div>
 
         <!-- Project dial. dial.js turns the wheel so the selected bar sits level
-             at the crown, and publishes each bar's distance from it. Selecting
-             the crowned bar opens its data-overview dialog; the backdrop swaps
-             to data-backdrop, or a tint of the data-art palette if unset. -->
+             at the crown, and publishes each bar's distance from it. The backdrop
+             swaps to data-backdrop, or a tint of the data-art palette if unset. -->
         <div class="dial">
             <div class="dial__ring" aria-hidden="true"></div>
             <ul class="dial__wheel" id="track" aria-label="Projects">
-                <li class="spoke" style="--i: 0" data-title="This Website" data-overview="overview-website"
+                <li class="spoke" style="--i: 0" data-title="This Website"
                     data-backdrop="images/mountains.webp" data-art="1">
                     <button class="spoke__bar" type="button">This Website</button>
                 </li>
-                <li class="spoke" style="--i: 1" data-title="Rap Wizards" data-overview="overview-rap-wizards" data-art="2">
+                <li class="spoke" style="--i: 1" data-title="Rap Wizards" data-art="2">
                     <button class="spoke__bar" type="button">Rap Wizards</button>
                 </li>
-                <li class="spoke" style="--i: 2" data-title="Studio Pending" data-overview="overview-studio-pending" data-art="3">
+                <li class="spoke" style="--i: 2" data-title="Studio Pending" data-art="3">
                     <button class="spoke__bar" type="button">Studio Pending</button>
                 </li>
             </ul>
@@ -86,88 +112,13 @@
 
     <!-- In-page resume. The frame has no src until first opened, so the PDF
          costs nothing on initial load. -->
-    <dialog class="viewer viewer--document" id="resume-viewer" aria-label="Resume">
+    <dialog class="viewer" id="resume-viewer" aria-label="Resume">
         <div class="viewer__bar">
             <span class="tab">Resume</span>
             <a class="tab" href="resume.pdf" download="Dylan James Gordon Resume.pdf">Download</a>
             <button class="tab" type="button" data-close>Close</button>
         </div>
         <iframe class="viewer__frame" title="Resume" data-src="resume.pdf#toolbar=0&amp;navpanes=0&amp;view=FitH"></iframe>
-    </dialog>
-
-    <!-- Project overviews. Bracketed copy is placeholder to be written. -->
-    <dialog class="viewer viewer--overview" id="overview-website" aria-labelledby="overview-website-title">
-        <div class="viewer__bar">
-            <span class="tab">Overview</span>
-            <button class="tab" type="button" data-close>Close</button>
-        </div>
-        <div class="overview">
-            <div class="overview__hero" data-art="1">Screenshots</div>
-            <div class="overview__body">
-                <h2 class="overview__title" id="overview-website-title">This Website</h2>
-                <p class="overview__role">Designer &amp; Developer <span class="meta-label">HTML · CSS · JavaScript</span></p>
-                <p>The site you're on, designed and built with HTML, CSS and JavaScript.</p>
-
-                <h3 class="overview__heading">Highlights</h3>
-                <ul class="overview__list">
-                    <li>A launcher-style project dial with drag, wheel and keyboard control</li>
-                    <li>Backdrops that follow the focused project, loaded only as you approach them</li>
-                    <li>An in-page resume viewer that costs nothing until it's opened</li>
-                </ul>
-
-                <h3 class="overview__heading">Next</h3>
-                <p>A playable physics toy in the about section.</p>
-            </div>
-        </div>
-    </dialog>
-
-    <dialog class="viewer viewer--overview" id="overview-rap-wizards" aria-labelledby="overview-rap-wizards-title">
-        <div class="viewer__bar">
-            <span class="tab">Overview</span>
-            <button class="tab" type="button" data-close>Close</button>
-        </div>
-        <div class="overview">
-            <div class="overview__hero" data-art="2">Key art / trailer</div>
-            <div class="overview__body">
-                <h2 class="overview__title" id="overview-rap-wizards-title">Rap Wizards</h2>
-                <p class="overview__role">Solo Developer <span class="meta-label">Unreal Engine</span></p>
-                <p>[What the game is and what makes it fun, in a sentence or two.]</p>
-
-                <h3 class="overview__heading">What I do</h3>
-                <ul class="overview__list">
-                    <li>Programming and gameplay systems</li>
-                    <li>Level design and narrative</li>
-                    <li>3D modeling, rigging and texturing</li>
-                </ul>
-
-                <h3 class="overview__heading">Status</h3>
-                <p>Vertical slice in progress.</p>
-            </div>
-        </div>
-    </dialog>
-
-    <dialog class="viewer viewer--overview" id="overview-studio-pending" aria-labelledby="overview-studio-pending-title">
-        <div class="viewer__bar">
-            <span class="tab">Overview</span>
-            <button class="tab" type="button" data-close>Close</button>
-        </div>
-        <div class="overview">
-            <div class="overview__hero" data-art="3">Key art / trailer</div>
-            <div class="overview__body">
-                <h2 class="overview__title" id="overview-studio-pending-title">Studio Pending</h2>
-                <p class="overview__role">Technical Director <span class="meta-label">Unreal Engine</span></p>
-                <p>[What the studio is making, in a sentence or two.]</p>
-
-                <h3 class="overview__heading">What I do</h3>
-                <ul class="overview__list">
-                    <li>Lead programming and technical direction, alongside the game director</li>
-                    <li>Run team meetings and keep the project on schedule</li>
-                </ul>
-
-                <h3 class="overview__heading">Team</h3>
-                <p>[Team size and disciplines.]</p>
-            </div>
-        </div>
     </dialog>
 
     <!-- backdrop.js listens for the rail's first render, so it must run before dial.js. -->
