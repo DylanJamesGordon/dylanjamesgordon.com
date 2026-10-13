@@ -1,70 +1,122 @@
 /**
- * Project rail.
+ * Project carousel.
  *
- * The rail itself is fixed: each card sits at a permanent --offset from the
- * centre, so the composition stays symmetric. Focusing a card scales it up in
- * place rather than sliding the whole group, which keeps small sets (two or
- * three projects) from looking lopsided.
+ * Position is tracked as a float in card-widths, not an index, so a drag can
+ * sit between two cards and the scaling follows the pointer continuously. The
+ * track slides to put that position at the centre of the viewport; releasing a
+ * drag snaps to the nearest card.
  *
- * Only --offset and --dist are published to CSS; the transform math lives in
- * styles.css so the rail can be retuned without touching this file.
+ * Only --shift (on the track) and --dist (per card) are published to CSS; the
+ * scaling curve lives in styles.css so it can be retuned independently.
  */
 
 const WHEEL_THRESHOLD = 24;
 const WHEEL_COOLDOWN = 320;
+const DRAG_SLOP = 6;        // px of travel before a press counts as a drag
 
-const gallery = document.querySelector('#gallery');
+const track = document.querySelector('#track');
 const label = document.querySelector('#focus-label');
-const cards = [...gallery.querySelectorAll('.card')];
+const cards = [...track.querySelectorAll('.card')];
+const centre = (cards.length - 1) / 2;
 
-let focused = Math.floor(cards.length / 2);
+let position = centre;
 let wheelLockedUntil = 0;
 
-/** Clamps to the ends rather than wrapping; with few projects, wrapping disorients. */
-function focus(index) {
-    focused = Math.max(0, Math.min(cards.length - 1, index));
+const clamp = (n) => Math.max(0, Math.min(cards.length - 1, n));
+
+/** Distance between card origins, measured from layout so it tracks the CSS. */
+function stride() {
+    if (cards.length < 2) return cards[0].offsetWidth;
+    return cards[1].offsetLeft - cards[0].offsetLeft;
+}
+
+function render() {
+    track.style.setProperty('--shift', `${(centre - position) * stride()}px`);
+
+    const nearest = Math.round(position);
+    cards.forEach((card, index) => {
+        card.style.setProperty('--dist', Math.abs(index - position).toFixed(3));
+        card.toggleAttribute('data-focused', index === nearest);
+
+        // Only the selected card is a tab stop, so Tab moves past the carousel
+        // instead of through every project.
+        card.querySelector('.card__face').tabIndex = index === nearest ? 0 : -1;
+    });
+
+    label.textContent = cards[nearest].dataset.title;
+}
+
+function goTo(index) {
+    position = clamp(index);
     render();
 }
 
-const railCenter = (cards.length - 1) / 2;
+/* ---- Drag -------------------------------------------------------------- */
 
-function render() {
-    cards.forEach((card, index) => {
-        const offset = index - railCenter;
+let drag = null;
 
-        card.style.setProperty('--offset', offset);
-        card.style.setProperty('--dist', Math.abs(offset));
-        card.toggleAttribute('data-focused', index === focused);
-
-        // Only the focused card is a tab stop, so Tab moves past the gallery
-        // instead of through every project.
-        card.querySelector('.card__face').tabIndex = index === focused ? 0 : -1;
-    });
-
-    label.textContent = cards[focused].dataset.title;
-}
-
-cards.forEach((card, index) => {
-    card.querySelector('.card__face').addEventListener('click', () => focus(index));
+track.addEventListener('pointerdown', (event) => {
+    drag = { id: event.pointerId, x: event.clientX, from: position, moved: false };
+    track.setPointerCapture(event.pointerId);
 });
 
-gallery.addEventListener('keydown', (event) => {
+track.addEventListener('pointermove', (event) => {
+    if (!drag || event.pointerId !== drag.id) return;
+
+    const dx = event.clientX - drag.x;
+    if (!drag.moved && Math.abs(dx) > DRAG_SLOP) {
+        drag.moved = true;
+        track.classList.add('is-dragging');
+    }
+    if (!drag.moved) return;
+
+    position = clamp(drag.from - dx / stride());
+    render();
+});
+
+function endDrag(event) {
+    if (!drag || event.pointerId !== drag.id) return;
+
+    track.classList.remove('is-dragging');
+    if (drag.moved) goTo(Math.round(position));
+    // Let the click handler know this press was a drag, not a selection.
+    track.dataset.dragged = drag.moved ? 'true' : '';
+    drag = null;
+}
+
+track.addEventListener('pointerup', endDrag);
+track.addEventListener('pointercancel', endDrag);
+
+/* ---- Click, keyboard, wheel -------------------------------------------- */
+
+cards.forEach((card, index) => {
+    card.querySelector('.card__face').addEventListener('click', () => {
+        if (track.dataset.dragged) return;      // released from a drag, not a tap
+        goTo(index);
+    });
+});
+
+track.addEventListener('keydown', (event) => {
     const step = { ArrowLeft: -1, ArrowRight: 1, Home: -cards.length, End: cards.length }[event.key];
     if (step === undefined) return;
 
     event.preventDefault();
-    focus(focused + step);
-    cards[focused].querySelector('.card__face').focus();
+    goTo(Math.round(position) + step);
+    cards[Math.round(position)].querySelector('.card__face').focus();
 });
 
 // Vertical wheel reads as horizontal travel here. Throttled so one trackpad
 // flick advances a single card rather than skidding to the end.
-gallery.addEventListener('wheel', (event) => {
+track.addEventListener('wheel', (event) => {
     const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
     if (Math.abs(delta) < WHEEL_THRESHOLD || event.timeStamp < wheelLockedUntil) return;
 
     wheelLockedUntil = event.timeStamp + WHEEL_COOLDOWN;
-    focus(focused + Math.sign(delta));
+    goTo(Math.round(position) + Math.sign(delta));
 }, { passive: true });
+
+// Stride is measured from layout, so a resize that changes card width or gap
+// needs the shift recomputed.
+addEventListener('resize', render);
 
 render();

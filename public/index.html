@@ -23,7 +23,7 @@
 
         <!-- Mirrors the focused card so the carousel reads as part of the UI, not a separate widget. -->
         <div class="chrome__group chrome__group--center">
-            <output class="pill" id="focus-label" for="gallery">Heavy Metal</output>
+            <output class="pill" id="focus-label" for="track">Heavy Metal</output>
         </div>
 
         <nav class="chrome__group" aria-label="Links">
@@ -36,38 +36,41 @@
     <main>
         <h1 class="visually-hidden">Dylan James Gordon, game developer</h1>
 
-        <!-- Project rail. JS assigns each card an offset from center; CSS derives the transform. -->
-        <ul class="gallery" id="gallery" aria-label="Projects">
-            <li class="card" data-title="Heavy Metal">
-                <button class="card__face" type="button">
-                    <span class="card__art" data-art="1"></span>
-                    <span class="card__meta">
-                        <span class="card__title">Heavy Metal</span>
-                        <span class="card__tag">Unreal · Systems &amp; Level Design</span>
-                    </span>
-                </button>
-            </li>
+        <!-- Project rail. The track slides so the selected card sits centred;
+             JS publishes each card's distance from centre and CSS scales on it. -->
+        <div class="gallery">
+            <ul class="gallery__track" id="track" aria-label="Projects">
+                <li class="card" data-title="Heavy Metal">
+                    <button class="card__face" type="button">
+                        <span class="card__art" data-art="1"></span>
+                        <span class="card__meta">
+                            <span class="card__title">Heavy Metal</span>
+                            <span class="card__tag">Unreal · Systems &amp; Level Design</span>
+                        </span>
+                    </button>
+                </li>
 
-            <li class="card" data-title="Realm Sim">
-                <button class="card__face" type="button">
-                    <span class="card__art" data-art="2"></span>
-                    <span class="card__meta">
-                        <span class="card__title">Realm Sim</span>
-                        <span class="card__tag">Unity · Interactive Comic</span>
-                    </span>
-                </button>
-            </li>
+                <li class="card" data-title="Realm Sim">
+                    <button class="card__face" type="button">
+                        <span class="card__art" data-art="2"></span>
+                        <span class="card__meta">
+                            <span class="card__title">Realm Sim</span>
+                            <span class="card__tag">Unity · Interactive Comic</span>
+                        </span>
+                    </button>
+                </li>
 
-            <li class="card" data-title="Untitled">
-                <button class="card__face" type="button">
-                    <span class="card__art" data-art="3"></span>
-                    <span class="card__meta">
-                        <span class="card__title">Untitled</span>
-                        <span class="card__tag">In development</span>
-                    </span>
-                </button>
-            </li>
-        </ul>
+                <li class="card" data-title="Untitled">
+                    <button class="card__face" type="button">
+                        <span class="card__art" data-art="3"></span>
+                        <span class="card__meta">
+                            <span class="card__title">Untitled</span>
+                            <span class="card__tag">In development</span>
+                        </span>
+                    </button>
+                </li>
+            </ul>
+        </div>
     </main>
 
     <script src="gallery.js" type="module"></script>

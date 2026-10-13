@@ -23,15 +23,14 @@
     --step-0: 0.8125rem;
     --step-1: 1rem;
 
-    /* Rail geometry. Each card sits at --offset steps from center; --dist is its
-       absolute value. Cards sit on one horizontal line and shrink toward the
-       edges, so size alone carries the depth. */
-    --card-w: clamp(7rem, 13vw, 11rem);
-    --rail-gap: calc(var(--card-w) * 0.92);
-    --rail-shrink: 0.14;
+    /* Rail geometry. Cards sit on one horizontal line, evenly spaced, and
+       shrink with distance from centre so size alone carries the depth. */
+    --card-w: clamp(8rem, 15vw, 12.5rem);
+    --rail-gap: clamp(0.75rem, 1.6vw, 1.5rem);
+    --rail-shrink: 0.17;
     /* Kept low: against a photo backdrop, faded cards go muddy rather than
        distant. */
-    --rail-fade: 0.1;
+    --rail-fade: 0.12;
 
     --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
     --speed: 520ms;
@@ -150,40 +149,52 @@ a.pill:focus-visible {
    ========================================================================== */
 
 .gallery {
-    position: relative;
+    display: grid;
+    place-items: center;
     height: 100%;
+    overflow: hidden;
+}
+
+/* Laid out by flex, so the gaps stay even no matter how the cards are scaled —
+   scale is a paint-time transform and doesn't disturb layout. */
+.gallery__track {
+    display: flex;
+    align-items: center;
+    gap: var(--rail-gap);
     margin: 0;
     padding: 0;
     list-style: none;
+    cursor: grab;
+    touch-action: none;
+    --shift: 0px;
+    translate: var(--shift);
+    transition: translate var(--speed) var(--ease);
+}
+
+.gallery__track.is-dragging {
+    cursor: grabbing;
+    /* The pointer is driving position directly; easing would lag behind it. */
+    transition: none;
 }
 
 .card {
-    /* inset + auto margins center every card on the same point; the rail is
-       then expressed purely as a translate away from that center. */
-    position: absolute;
-    inset: 0;
-    margin: auto;
+    flex: none;
     width: var(--card-w);
     aspect-ratio: 9 / 16;
 
-    /* Defaults so the first paint is already centered, before JS runs. */
-    --offset: 0;
+    /* Distance in card-widths from the centre of the viewport, set by
+       gallery.js. Fractional while dragging, so scaling tracks the drag. */
     --dist: 0;
-    transition: translate var(--speed) var(--ease), scale var(--speed) var(--ease),
-        opacity var(--speed) var(--ease);
 
-    /* Rail placement, derived entirely from --offset / --dist set by gallery.js. */
-    translate: calc(var(--offset) * var(--rail-gap));
-    scale: calc(1 - var(--dist) * var(--rail-shrink));
-    opacity: calc(1 - var(--dist) * var(--rail-fade));
-    z-index: calc(100 - var(--dist));
+    /* Clamped so a long rail doesn't scale its far ends into nothing. */
+    scale: calc(1 - min(var(--dist), 2) * var(--rail-shrink));
+    opacity: calc(1 - min(var(--dist), 2) * var(--rail-fade));
+    z-index: calc(100 - min(var(--dist), 2));
+    transition: scale var(--speed) var(--ease), opacity var(--speed) var(--ease);
 }
 
-/* Focus reads as size and full opacity; the card stays on the rail. */
-.card[data-focused] {
-    scale: calc(1 - var(--dist) * var(--rail-shrink) + 0.1);
-    opacity: 1;
-    z-index: 200;
+.is-dragging .card {
+    transition: none;
 }
 
 .card__face {
@@ -270,8 +281,8 @@ a.pill:focus-visible {
 
 @media (width <= 40rem) {
     :root {
-        --card-w: clamp(8rem, 44vw, 13rem);
-        --rail-gap: calc(var(--card-w) * 0.62);
+        --card-w: clamp(8rem, 52vw, 13rem);
+        --rail-gap: 0.75rem;
     }
 
     /* Side groups would collide with the center slot at this width. */
@@ -287,9 +298,11 @@ a.pill:focus-visible {
 
 @media (prefers-reduced-motion: reduce) {
 
+    .gallery__track,
     .card,
-    .pill,
-    .card__face {
+    .card__face,
+    .card__meta,
+    .pill {
         transition-duration: 1ms;
     }
 }
