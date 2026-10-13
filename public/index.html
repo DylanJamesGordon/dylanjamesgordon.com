@@ -12,19 +12,7 @@
 <body>
     <!-- Atmospheric backdrop. Purely decorative, so it's hidden from assistive tech. -->
     <div class="backdrop" aria-hidden="true">
-        <!-- Two ridges at different depths; the far one is hazier, which is what
-             sells the distance. -->
-        <svg class="backdrop__ridge backdrop__ridge--far" viewBox="0 0 1440 320" preserveAspectRatio="none">
-            <path d="M0,320 L0,272 L180,238 L330,264 L470,206 L620,248 L760,188
-                     L900,240 L1060,200 L1230,252 L1440,224 L1440,320 Z" />
-        </svg>
-
-        <svg class="backdrop__ridge backdrop__ridge--near" viewBox="0 0 1440 320" preserveAspectRatio="none">
-            <path d="M0,320 L0,298 L220,272 L430,216 L560,160 L660,100 L720,68
-                     L790,118 L880,180 L1010,232 L1210,280 L1440,300 L1440,320 Z" />
-        </svg>
-
-        <div class="backdrop__haze"></div>
+        <div class="backdrop__scrim"></div>
     </div>
 
     <header class="chrome">

@@ -5,15 +5,13 @@
    ========================================================================== */
 
 :root {
-    /* Atmosphere */
-    --sky-high: #9ab0bb;
-    --sky-mid: #718a97;
-    --sky-low: #4e636d;
-    --ridge: #1d252b;
+    /* Atmosphere — sampled from the backdrop photo. */
+    --sky-mid: #6a989e;
+    --sky-low: #1d3a3e;
 
     /* Ink */
-    --ink: #eef3f6;
-    --ink-dim: #b3c2cb;
+    --ink: #eef5f6;
+    --ink-dim: #adc4c7;
 
     /* Surfaces */
     --glass: rgb(16 22 27 / 55%);
@@ -32,7 +30,9 @@
     --arc-dip: 2.2rem;
     --arc-tilt: 2.4deg;
     --arc-shrink: 0.08;
-    --arc-fade: 0.22;
+    /* Kept low: against a photo backdrop, faded cards go muddy rather than
+       distant. Depth comes from scale and the dip instead. */
+    --arc-fade: 0.1;
 
     --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
     --speed: 520ms;
@@ -81,36 +81,20 @@ body {
     position: fixed;
     inset: 0;
     z-index: -1;
+    /* Gradient underneath covers the aspect ratios the photo can't fill. */
     background:
-        radial-gradient(120% 70% at 50% 8%, rgb(255 255 255 / 10%), transparent 60%),
-        linear-gradient(180deg, var(--sky-high) 0%, var(--sky-mid) 45%, var(--sky-low) 100%);
+        url("images/mountains.webp") center / cover no-repeat,
+        linear-gradient(180deg, var(--sky-mid), var(--sky-low));
 }
 
-.backdrop__ridge {
+/* Darkens the sky just enough for the chrome pills to hold contrast, and sinks
+   the corners so the arc reads as the brightest thing on the page. */
+.backdrop__scrim {
     position: absolute;
-    inset: auto 0 0;
-    width: 100%;
-    fill: var(--ridge);
-}
-
-.backdrop__ridge--far {
-    height: min(30vh, 17rem);
-    opacity: 0.3;
-    filter: blur(1.5px);
-}
-
-.backdrop__ridge--near {
-    height: min(52vh, 30rem);
-    opacity: 0.86;
-}
-
-/* Thins the ridge bases back toward the sky so they sit in air rather than
-   ending on a hard cut. Kept subtle; too much and the whole frame greys out. */
-.backdrop__haze {
-    position: absolute;
-    inset: auto 0 0;
-    height: min(30vh, 17rem);
-    background: linear-gradient(180deg, transparent, rgb(122 148 161 / 22%));
+    inset: 0;
+    background:
+        linear-gradient(180deg, rgb(10 22 26 / 34%) 0%, transparent 28%),
+        radial-gradient(130% 85% at 50% 42%, transparent 38%, rgb(8 20 24 / 42%) 100%);
 }
 
 /* =============================================================================
