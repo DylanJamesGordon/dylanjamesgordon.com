@@ -11,8 +11,8 @@
 
 /* =============================================================================
    Tokens
-   The whole look is driven from here. Rail geometry lives alongside colour so
-   the gallery can be retuned without touching the transform math in .card.
+   The whole look is driven from here. Dial geometry lives alongside colour so
+   the dial can be retuned without touching the transform math in .spoke.
    ========================================================================== */
 
 :root {
@@ -40,14 +40,12 @@
     --step-0: 0.875rem;
     --step-1: 1rem;
 
-    /* Rail geometry. Cards sit on one horizontal line, evenly spaced, and
-       shrink with distance from centre so size alone carries the depth. */
-    --card-w: clamp(8rem, 15vw, 12.5rem);
-    --rail-gap: clamp(0.75rem, 1.6vw, 1.5rem);
-    --rail-shrink: 0.17;
-    /* Kept low: against a photo backdrop, faded cards go muddy rather than
-       distant. */
-    --rail-fade: 0.12;
+    /* Dial geometry. --step is the angle between neighbouring bars; with
+       --bar-w it must leave a gap at the smallest radius. */
+    --dial-radius: clamp(14rem, 26vw, 22rem);
+    --dial-h: 10rem;
+    --step: 34deg;
+    --bar-w: 8.5rem;
 
     --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
     --speed: 520ms;
@@ -116,8 +114,8 @@ body {
     opacity: 1;
 }
 
-/* Stand-in until a project has key art: the house photo washed in its card
-   colours, so the swap still reads. */
+/* Stand-in until a project has key art: the house photo washed in its
+   placeholder palette, so the swap still reads. */
 .backdrop__layer[data-art] {
     background:
         linear-gradient(165deg,
@@ -250,94 +248,202 @@ a.tab:focus-visible {
 }
 
 /* =============================================================================
-   Gallery — the rail
+   Stage — the selected project's pitch above, the dial below
    ========================================================================== */
 
-.gallery {
+.stage {
     display: grid;
-    place-items: center;
-    height: 100%;
-    overflow: hidden;
+    grid-template-rows: 1fr auto;
+    min-height: 0;
 }
 
-/* Laid out by flex, so the gaps stay even no matter how the cards are scaled —
-   scale is a paint-time transform and doesn't disturb layout. */
-.gallery__track {
-    display: flex;
+/* Every project's pitch shares one cell; the selected one fades in. */
+.stage__heroes {
+    display: grid;
     align-items: center;
-    gap: var(--rail-gap);
+    padding: 2rem clamp(1.5rem, 8vw, 7rem) 0;
+}
+
+.hero {
+    grid-area: 1 / 1;
+    display: grid;
+    justify-items: start;
+    gap: 0.6rem;
+    max-width: 34rem;
+    opacity: 0;
+    translate: 0 0.75rem;
+    transition: opacity var(--speed) var(--ease), translate var(--speed) var(--ease);
+}
+
+.hero[data-active] {
+    opacity: 1;
+    translate: 0;
+}
+
+.hero__title {
+    margin: 0;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1;
+    text-shadow: 0 0.25rem 2rem rgb(6 16 20 / 45%);
+}
+
+.hero__role {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin: 0;
+    font-size: var(--step-1);
+}
+
+.hero__pitch {
+    margin: 0.4rem 0 0.8rem;
+    color: var(--ink-dim);
+    line-height: 1.6;
+}
+
+.hero__open {
+    padding: 0.55rem 1.1rem;
+    border: 1px solid var(--hairline);
+    border-radius: 999px;
+    background: var(--glass);
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--step--1);
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background var(--speed) var(--ease), border-color var(--speed) var(--ease);
+}
+
+.hero__open:hover,
+.hero__open:focus-visible {
+    border-color: var(--ink);
+    background: rgb(238 243 246 / 14%);
+}
+
+.hero__open:focus-visible {
+    outline: 1px solid var(--ink);
+    outline-offset: 2px;
+}
+
+/* Tooling, as a quieter label beside the role: what you did reads first,
+   what you did it in second. */
+.meta-label {
+    color: var(--ink-dim);
+    font-size: 0.625rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+/* ---- Dial ----------------------------------------------------------------
+   A wheel whose centre sits below the visible band, so only its crown shows.
+   Bars sit tangent to the rim at --step intervals; dial.js turns the wheel so
+   the selected bar is level at the top. */
+
+.dial {
+    position: relative;
+    height: var(--dial-h);
+    overflow: hidden;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    /* Wheel centre, measured down from the top of the band. */
+    --hub: calc(var(--dial-radius) + 1.75rem);
+}
+
+.dial.is-dragging {
+    cursor: grabbing;
+}
+
+/* Runs through the bar centres, so the bars ride on it. dial.js measures it
+   for the drag ratio. */
+.dial__ring {
+    position: absolute;
+    left: 50%;
+    top: calc(var(--hub) - var(--dial-radius));
+    width: calc(2 * var(--dial-radius));
+    aspect-ratio: 1;
+    translate: -50% 0;
+    border: 1px solid var(--hairline);
+    border-radius: 50%;
+    background: radial-gradient(closest-side, transparent 92%, rgb(238 243 246 / 6%));
+}
+
+/* Notch marking the selection point at the crown. */
+.dial::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0.2rem;
+    width: 1px;
+    height: 0.6rem;
+    background: var(--ink);
+    translate: -50% 0;
+}
+
+.dial__wheel {
+    position: absolute;
+    left: 50%;
+    top: var(--hub);
+    width: 0;
+    height: 0;
     margin: 0;
     padding: 0;
     list-style: none;
-    cursor: grab;
-    touch-action: none;
-    --shift: 0px;
-    translate: var(--shift);
-    transition: translate var(--speed) var(--ease);
+    --turn: 0deg;
+    rotate: var(--turn);
+    transition: rotate var(--speed) var(--ease);
 }
 
-.gallery__track.is-dragging {
-    cursor: grabbing;
-    /* The pointer is driving position directly; easing would lag behind it. */
+.is-dragging .dial__wheel,
+.is-dragging .spoke {
+    /* The pointer is driving the turn directly; easing would lag behind it. */
     transition: none;
 }
 
-.card {
-    flex: none;
-    width: var(--card-w);
-    aspect-ratio: 9 / 16;
-
-    /* Distance in card-widths from the centre of the viewport, set by
-       gallery.js. Fractional while dragging, so scaling tracks the drag. */
+.spoke {
+    position: absolute;
+    rotate: calc(var(--i) * var(--step));
+    /* Steps from the selection, set by dial.js. Fractional while dragging. */
     --dist: 0;
-
-    /* Clamped so a long rail doesn't scale its far ends into nothing. */
-    scale: calc(1 - min(var(--dist), 2) * var(--rail-shrink));
-    opacity: calc(1 - min(var(--dist), 2) * var(--rail-fade));
-    z-index: calc(100 - min(var(--dist), 2));
-    transition: scale var(--speed) var(--ease), opacity var(--speed) var(--ease);
+    opacity: calc(1 - min(var(--dist), 2) * 0.3);
+    transition: opacity var(--speed) var(--ease);
 }
 
-.is-dragging .card {
-    transition: none;
-}
-
-.card__face {
-    position: relative;
-    display: block;
-    width: 100%;
-    height: 100%;
-    padding: 0;
+.spoke__bar {
+    position: absolute;
+    translate: -50% calc(-50% - var(--dial-radius));
+    width: var(--bar-w);
+    padding: 0.5rem 0.75rem;
     border: 1px solid var(--glass-edge);
-    border-radius: 4px;
+    border-radius: 999px;
     background: var(--glass);
-    color: inherit;
+    color: var(--ink-dim);
     font: inherit;
-    text-align: left;
+    font-size: var(--step--1);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
     cursor: pointer;
-    overflow: hidden;
-    box-shadow: 0 1.5rem 3rem rgb(8 12 15 / 35%);
-    transition: border-color var(--speed) var(--ease), box-shadow var(--speed) var(--ease);
+    backdrop-filter: blur(6px);
+    transition: color var(--speed) var(--ease), border-color var(--speed) var(--ease), background var(--speed) var(--ease);
 }
 
-.card[data-focused] .card__face {
-    border-color: rgb(238 243 246 / 38%);
-    box-shadow: 0 2rem 4rem rgb(8 12 15 / 50%);
+.spoke[data-focused] .spoke__bar {
+    border-color: var(--ink);
+    background: rgb(238 243 246 / 16%);
+    color: var(--ink);
 }
 
-.card__face:focus-visible {
-    outline: 2px solid var(--ink);
+.spoke__bar:focus-visible {
+    outline: 1px solid var(--ink);
     outline-offset: 3px;
 }
 
-/* Placeholder art. Swap these backgrounds for real captures when they exist.
-   The palettes are shared with the backdrop and overview stand-ins. */
-.card__art {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(165deg, var(--art-a), var(--art-b));
-}
-
+/* Placeholder art palettes, shared by the backdrop and overview stand-ins.
+   Swap for real captures when they exist. */
 [data-art="1"] {
     --art-a: #2b3a46;
     --art-b: #8a4a3d;
@@ -351,45 +457,6 @@ a.tab:focus-visible {
 [data-art="3"] {
     --art-a: #222a30;
     --art-b: #4a4f63;
-}
-
-/* Cards overlap by design, so only the focused one captions itself. Otherwise
-   neighbouring titles collide in the stack. Overlaid rather than stacked below
-   the art, so unfocused cards show artwork edge to edge. */
-.card__meta {
-    position: absolute;
-    inset: auto 0 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
-    padding: 2rem 0.7rem 0.7rem;
-    background: linear-gradient(180deg, transparent, rgb(10 14 17 / 82%) 55%);
-    opacity: 0;
-    transition: opacity var(--speed) var(--ease);
-}
-
-.card[data-focused] .card__meta {
-    opacity: 1;
-}
-
-.card__title {
-    font-size: var(--step-0);
-}
-
-.card__tag {
-    color: var(--ink-dim);
-    font-size: var(--step--1);
-}
-
-/* Tooling sits under the role as a quieter label: what you did reads first,
-   what you did it in second. */
-.card__engine {
-    margin-top: 0.1rem;
-    color: var(--ink-dim);
-    font-size: 0.625rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    opacity: 0.7;
 }
 
 /* =============================================================================
@@ -487,7 +554,7 @@ button.tab:focus-visible {
     scrollbar-color: var(--hairline) transparent;
 }
 
-/* Stand-in for key art or a trailer: the card's palette at 16:9. */
+/* Stand-in for key art or a trailer: the project's palette at 16:9. */
 .overview__hero {
     display: grid;
     place-items: center;
@@ -527,7 +594,7 @@ button.tab:focus-visible {
     color: var(--ink);
 }
 
-/* Matches .card__engine, so the overview reads as the card opened up. */
+/* Matches .meta-label, so the overview reads as the pitch opened up. */
 .overview__heading {
     margin: 1.5rem 0 0.4rem;
     color: var(--ink-dim);
@@ -549,8 +616,13 @@ button.tab:focus-visible {
 
 @media (width <= 40rem) {
     :root {
-        --card-w: clamp(8rem, 52vw, 13rem);
-        --rail-gap: 0.75rem;
+        --dial-radius: 13rem;
+        --step: 40deg;
+        --bar-w: 7.5rem;
+    }
+
+    .spoke__bar {
+        font-size: 0.6875rem;
     }
 
     /* Side groups would collide with the center slot at this width. */
@@ -567,10 +639,11 @@ button.tab:focus-visible {
 @media (prefers-reduced-motion: reduce) {
 
     .backdrop__layer,
-    .gallery__track,
-    .card,
-    .card__face,
-    .card__meta,
+    .hero,
+    .hero__open,
+    .dial__wheel,
+    .spoke,
+    .spoke__bar,
     .tab {
         transition-duration: 1ms;
     }

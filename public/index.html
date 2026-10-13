@@ -24,7 +24,7 @@
             <span class="tab">Game Designer</span>
         </div>
 
-        <!-- Mirrors the focused card so the carousel reads as part of the UI, not a separate widget. -->
+        <!-- Mirrors the selected project so the dial reads as part of the UI, not a separate widget. -->
         <div class="chrome__group chrome__group--center">
             <output class="tab" id="focus-label" for="track">Rap Wizards</output>
         </div>
@@ -36,46 +36,49 @@
         </nav>
     </header>
 
-    <main>
+    <main class="stage">
         <h1 class="visually-hidden">Dylan James Gordon, game designer</h1>
 
-        <!-- Project rail. The track slides so the selected card sits centred;
-             JS publishes each card's distance from centre and CSS scales on it.
-             Selecting the centred card opens its data-overview dialog; the
-             backdrop swaps to data-backdrop, or a tint of the card art if unset. -->
-        <div class="gallery">
-            <ul class="gallery__track" id="track" aria-label="Projects">
-                <li class="card" data-title="This Website" data-overview="overview-website" data-backdrop="images/mountains.webp">
-                    <button class="card__face" type="button">
-                        <span class="card__art" data-art="1"></span>
-                        <span class="card__meta">
-                            <span class="card__title">This Website</span>
-                            <span class="card__tag">Designer &amp; Developer</span>
-                            <span class="card__engine">HTML · CSS · JavaScript</span>
-                        </span>
-                    </button>
-                </li>
+        <!-- One pitch per project, in dial order; dial.js shows the selected one. -->
+        <div class="stage__heroes">
+            <article class="hero">
+                <h2 class="hero__title">This Website</h2>
+                <p class="hero__role">Designer &amp; Developer <span class="meta-label">HTML · CSS · JavaScript</span></p>
+                <p class="hero__pitch">Designed and built by hand in plain HTML, CSS and JavaScript.</p>
+                <button class="hero__open" type="button" data-dialog="overview-website">View project</button>
+            </article>
 
-                <li class="card" data-title="Rap Wizards" data-overview="overview-rap-wizards">
-                    <button class="card__face" type="button">
-                        <span class="card__art" data-art="2"></span>
-                        <span class="card__meta">
-                            <span class="card__title">Rap Wizards</span>
-                            <span class="card__tag">Solo Developer</span>
-                            <span class="card__engine">Unreal Engine</span>
-                        </span>
-                    </button>
-                </li>
+            <article class="hero">
+                <h2 class="hero__title">Rap Wizards</h2>
+                <p class="hero__role">Solo Developer <span class="meta-label">Unreal Engine</span></p>
+                <p class="hero__pitch">[One-line pitch for the game.]</p>
+                <button class="hero__open" type="button" data-dialog="overview-rap-wizards">View project</button>
+            </article>
 
-                <li class="card" data-title="Studio Pending" data-overview="overview-studio-pending">
-                    <button class="card__face" type="button">
-                        <span class="card__art" data-art="3"></span>
-                        <span class="card__meta">
-                            <span class="card__title">Studio Pending</span>
-                            <span class="card__tag">Technical Director</span>
-                            <span class="card__engine">Unreal Engine</span>
-                        </span>
-                    </button>
+            <article class="hero">
+                <h2 class="hero__title">Studio Pending</h2>
+                <p class="hero__role">Technical Director <span class="meta-label">Unreal Engine</span></p>
+                <p class="hero__pitch">[One-line pitch for the studio.]</p>
+                <button class="hero__open" type="button" data-dialog="overview-studio-pending">View project</button>
+            </article>
+        </div>
+
+        <!-- Project dial. dial.js turns the wheel so the selected bar sits level
+             at the crown, and publishes each bar's distance from it. Selecting
+             the crowned bar opens its data-overview dialog; the backdrop swaps
+             to data-backdrop, or a tint of the data-art palette if unset. -->
+        <div class="dial">
+            <div class="dial__ring" aria-hidden="true"></div>
+            <ul class="dial__wheel" id="track" aria-label="Projects">
+                <li class="spoke" style="--i: 0" data-title="This Website" data-overview="overview-website"
+                    data-backdrop="images/mountains.webp" data-art="1">
+                    <button class="spoke__bar" type="button">This Website</button>
+                </li>
+                <li class="spoke" style="--i: 1" data-title="Rap Wizards" data-overview="overview-rap-wizards" data-art="2">
+                    <button class="spoke__bar" type="button">Rap Wizards</button>
+                </li>
+                <li class="spoke" style="--i: 2" data-title="Studio Pending" data-overview="overview-studio-pending" data-art="3">
+                    <button class="spoke__bar" type="button">Studio Pending</button>
                 </li>
             </ul>
         </div>
@@ -102,12 +105,12 @@
             <div class="overview__hero" data-art="1">Screenshots</div>
             <div class="overview__body">
                 <h2 class="overview__title" id="overview-website-title">This Website</h2>
-                <p class="overview__role">Designer &amp; Developer <span class="card__engine">HTML · CSS · JavaScript</span></p>
+                <p class="overview__role">Designer &amp; Developer <span class="meta-label">HTML · CSS · JavaScript</span></p>
                 <p>The site you're on, designed and built by hand in plain HTML, CSS and JavaScript.</p>
 
                 <h3 class="overview__heading">Highlights</h3>
                 <ul class="overview__list">
-                    <li>A launcher-style project rail with drag, wheel and keyboard control</li>
+                    <li>A launcher-style project dial with drag, wheel and keyboard control</li>
                     <li>Backdrops that follow the focused project, loaded only as you approach them</li>
                     <li>An in-page resume viewer that costs nothing until it's opened</li>
                 </ul>
@@ -127,7 +130,7 @@
             <div class="overview__hero" data-art="2">Key art / trailer</div>
             <div class="overview__body">
                 <h2 class="overview__title" id="overview-rap-wizards-title">Rap Wizards</h2>
-                <p class="overview__role">Solo Developer <span class="card__engine">Unreal Engine</span></p>
+                <p class="overview__role">Solo Developer <span class="meta-label">Unreal Engine</span></p>
                 <p>[What the game is and what makes it fun, in a sentence or two.]</p>
 
                 <h3 class="overview__heading">What I do</h3>
@@ -152,7 +155,7 @@
             <div class="overview__hero" data-art="3">Key art / trailer</div>
             <div class="overview__body">
                 <h2 class="overview__title" id="overview-studio-pending-title">Studio Pending</h2>
-                <p class="overview__role">Technical Director <span class="card__engine">Unreal Engine</span></p>
+                <p class="overview__role">Technical Director <span class="meta-label">Unreal Engine</span></p>
                 <p>[What the studio is making, in a sentence or two.]</p>
 
                 <h3 class="overview__heading">What I do</h3>
@@ -167,9 +170,9 @@
         </div>
     </dialog>
 
-    <!-- backdrop.js listens for the rail's first render, so it must run before gallery.js. -->
+    <!-- backdrop.js listens for the rail's first render, so it must run before dial.js. -->
     <script src="backdrop.js" type="module"></script>
-    <script src="gallery.js" type="module"></script>
+    <script src="dial.js" type="module"></script>
     <script src="viewer.js" type="module"></script>
 </body>
 

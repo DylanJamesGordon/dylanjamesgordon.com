@@ -10,12 +10,12 @@
 const track = document.querySelector('#track');
 const backdrop = document.querySelector('.backdrop');
 const scrim = backdrop.querySelector('.backdrop__scrim');
-const cards = [...track.querySelectorAll('.card')];
+const projects = [...track.querySelectorAll('.spoke')];
 
-const layers = cards.map((card) => {
+const layers = projects.map((project) => {
     const layer = document.createElement('div');
     layer.className = 'backdrop__layer';
-    if (!card.dataset.backdrop) layer.dataset.art = card.querySelector('.card__art').dataset.art;
+    if (!project.dataset.backdrop) layer.dataset.art = project.dataset.art;
     backdrop.insertBefore(layer, scrim);
     return layer;
 });
@@ -24,7 +24,7 @@ track.addEventListener('railmove', ({ detail: { position } }) => {
     const nearest = Math.round(position);
 
     layers.forEach((layer, index) => {
-        const src = cards[index].dataset.backdrop;
+        const src = projects[index].dataset.backdrop;
         if (src && !layer.style.backgroundImage && Math.abs(index - position) <= 1) {
             layer.style.backgroundImage = `url("${src}")`;
         }
