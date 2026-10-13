@@ -19,7 +19,9 @@ const label = document.querySelector('#focus-label');
 const cards = [...track.querySelectorAll('.card')];
 const centre = (cards.length - 1) / 2;
 
-let position = centre;
+// Open on the middle card, or the left of the middle pair when the count is
+// even, so the rail never starts parked between two cards.
+let position = Math.floor(centre);
 let wheelLockedUntil = 0;
 
 const clamp = (n) => Math.max(0, Math.min(cards.length - 1, n));

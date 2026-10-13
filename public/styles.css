@@ -356,6 +356,17 @@ a.tab:focus-visible {
     font-size: var(--step--1);
 }
 
+/* Tooling sits under the role as a quieter label: what you did reads first,
+   what you did it in second. */
+.card__engine {
+    margin-top: 0.1rem;
+    color: var(--ink-dim);
+    font-size: 0.625rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
 /* =============================================================================
    Viewer — in-page document dialog
    ========================================================================== */
