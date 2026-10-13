@@ -86,7 +86,7 @@ body {
         linear-gradient(180deg, var(--sky-mid), var(--sky-low));
 }
 
-/* Darkens the sky just enough for the chrome pills to hold contrast, and sinks
+/* Darkens the sky just enough for the chrome tabs to hold contrast, and sinks
    the corners so the rail reads as the brightest thing on the page. */
 .backdrop__scrim {
     position: absolute;
@@ -126,7 +126,7 @@ body {
    backdrop blur would end on a hard line where the gradient runs out. */
 .tab {
     position: relative;
-    padding: 0.7rem 1.05rem 2.6rem;
+    padding: 0.7rem 1.7rem 1.7rem;
     color: var(--ink);
     font-size: var(--step--1);
     letter-spacing: 0.08em;
@@ -134,7 +134,7 @@ body {
     white-space: nowrap;
     background: linear-gradient(180deg, rgb(6 16 20 / 62%) 0%, rgb(6 16 20 / 34%) 38%, rgb(6 16 20 / 0%) 100%);
     backdrop-filter: blur(7px);
-    mask-image: linear-gradient(180deg, #000 22%, rgb(0 0 0 / 45%) 55%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 32%, rgb(0 0 0 / 42%) 64%, transparent 100%);
     transition: background var(--speed) var(--ease), color var(--speed) var(--ease);
 }
 
@@ -146,10 +146,6 @@ body {
     inset: 0 auto 0 0;
     width: 1px;
     background: linear-gradient(180deg, var(--hairline), transparent);
-}
-
-.tab--muted {
-    color: var(--ink-dim);
 }
 
 a.tab:hover,
