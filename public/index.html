@@ -65,6 +65,9 @@
                 <p class="hero__role">Concept <span class="meta-label">[Engine]</span></p>
                 <p class="hero__pitch">[The concept, in a sentence or two.]</p>
             </article>
+
+            <!-- Murloc March's scene, run by march.js while that project is selected. -->
+            <canvas class="march" aria-hidden="true"></canvas>
         </div>
 
         <!-- Project dial. dial.js turns the wheel so the selected bar sits level
@@ -83,7 +86,7 @@
                 <li class="spoke" style="--i: 2" data-title="Studio Pending" data-art="3">
                     <button class="spoke__bar" type="button">Studio Pending</button>
                 </li>
-                <li class="spoke" style="--i: 3" data-title="Murloc March" data-art="4">
+                <li class="spoke" style="--i: 3" data-title="Murloc March" data-art="4" data-scene="march">
                     <button class="spoke__bar" type="button">Murloc March</button>
                 </li>
             </ul>
@@ -101,8 +104,9 @@
         <iframe class="viewer__frame" title="Resume" data-src="resume.pdf#toolbar=0&amp;navpanes=0&amp;view=FitH"></iframe>
     </dialog>
 
-    <!-- backdrop.js listens for the dial's first render, so it must run before dial.js. -->
+    <!-- backdrop.js and march.js listen for the dial's first render, so they must run before dial.js. -->
     <script src="backdrop.js" type="module"></script>
+    <script src="march.js" type="module"></script>
     <script src="dial.js" type="module"></script>
     <script src="viewer.js" type="module"></script>
 </body>
