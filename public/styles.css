@@ -18,8 +18,10 @@
     --glass-edge: rgb(238 243 246 / 14%);
     --hairline: rgb(238 243 246 / 26%);
 
-    /* Shared tab width — must clear the longest label, "Dylan James Gordon". */
-    --tab-w: 11rem;
+    /* Each side group spans this width and divides it evenly among its tabs, so
+       the two sides balance regardless of how many tabs each holds. Must clear
+       the longest label at its share — currently "Dylan James Gordon" at half. */
+    --group-w: 22rem;
 
     /* Type */
     --mono: ui-monospace, "SF Mono", "Cascadia Mono", "JetBrains Mono", Menlo, Consolas, monospace;
@@ -141,11 +143,17 @@ body {
     translate: -50% 0;
 }
 
-/* The centre tab mirrors the others at rest but may hold a project title longer
-   than any fixed label, so it grows rather than spilling its box. */
+/* Both side groups claim the same span; their tabs divide it between them. */
+.chrome__group--identity,
+.chrome__group--links {
+    width: var(--group-w);
+}
+
+/* The centre tab sizes to its content — it carries project titles, which run
+   longer than any fixed label. */
 .chrome__group--center .tab {
-    width: auto;
-    min-width: var(--tab-w);
+    flex: none;
+    padding-inline: 1.5rem;
 }
 
 /* Edge rules closing the identity group and opening the links group, so each
@@ -172,9 +180,9 @@ body {
    carries the fill and the fade. */
 .tab {
     position: relative;
-    /* Every tab shares one width so the two groups mirror each other exactly.
-       Sized to the longest label; shorter ones centre in the space. */
-    width: var(--tab-w);
+    /* Tabs split their group's width evenly, so every tab on a side is the same
+       size and both sides balance. */
+    flex: 1;
     padding: 0.45rem 0.6rem 0.95rem;
     text-align: center;
     color: var(--ink);
