@@ -16,6 +16,7 @@
     /* Surfaces */
     --glass: rgb(16 22 27 / 55%);
     --glass-edge: rgb(238 243 246 / 14%);
+    --hairline: rgb(238 243 246 / 26%);
 
     /* Type */
     --mono: ui-monospace, "SF Mono", "Cascadia Mono", "JetBrains Mono", Menlo, Consolas, monospace;
@@ -102,15 +103,15 @@ body {
 .chrome {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: start;
     gap: 1rem;
-    padding: 0.75rem 1rem;
+    /* No top padding: the tabs hang off the top edge of the viewport. */
+    padding: 0 1.25rem;
 }
 
 .chrome__group {
     display: flex;
-    gap: 0.4rem;
-    align-items: center;
+    align-items: stretch;
 }
 
 .chrome__group--center {
@@ -120,28 +121,45 @@ body {
     translate: -50% 0;
 }
 
-.pill {
-    padding: 0.3rem 0.7rem;
-    border: 1px solid var(--glass-edge);
-    border-radius: 999px;
-    background: var(--glass);
+/* Tabs descend from the top edge and dissolve into the photograph. The mask
+   fades the fill, the blur and the divider rules together — without it the
+   backdrop blur would end on a hard line where the gradient runs out. */
+.tab {
+    position: relative;
+    padding: 0.7rem 1.05rem 2.6rem;
     color: var(--ink);
     font-size: var(--step--1);
-    letter-spacing: 0.04em;
+    letter-spacing: 0.08em;
     text-decoration: none;
     white-space: nowrap;
-    backdrop-filter: blur(10px);
-    transition: background var(--speed) var(--ease), border-color var(--speed) var(--ease);
+    background: linear-gradient(180deg, rgb(6 16 20 / 62%) 0%, rgb(6 16 20 / 34%) 38%, rgb(6 16 20 / 0%) 100%);
+    backdrop-filter: blur(7px);
+    mask-image: linear-gradient(180deg, #000 22%, rgb(0 0 0 / 45%) 55%, transparent 100%);
+    transition: background var(--speed) var(--ease), color var(--speed) var(--ease);
 }
 
-.pill--muted {
+/* Hairline between adjacent tabs, fading out on the way down with everything
+   else. */
+.tab+.tab::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 1px;
+    background: linear-gradient(180deg, var(--hairline), transparent);
+}
+
+.tab--muted {
     color: var(--ink-dim);
 }
 
-a.pill:hover,
-a.pill:focus-visible {
-    background: rgb(238 243 246 / 16%);
-    border-color: rgb(238 243 246 / 34%);
+a.tab:hover,
+a.tab:focus-visible {
+    background: linear-gradient(180deg, rgb(12 28 34 / 78%), rgb(12 28 34 / 0%));
+}
+
+a.tab:focus-visible {
+    outline: 1px solid var(--ink);
+    outline-offset: -1px;
 }
 
 /* =============================================================================
@@ -302,7 +320,7 @@ a.pill:focus-visible {
     .card,
     .card__face,
     .card__meta,
-    .pill {
+    .tab {
         transition-duration: 1ms;
     }
 }
