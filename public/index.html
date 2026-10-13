@@ -1,223 +1,113 @@
-<!-- Portfolio hosted using Github Pages, landing name for website is 'index.html' - The structure -->
-<!-- HTML was butter, I think the excercises in class helped a lot. Needed a lot more help when figuring out how to work Javascript -->
 <!DOCTYPE html>
-
-<!-- Root HTML element: everything on the page must be inside this tag -->
-<!-- Browser language = English -->
 <html lang="en">
 
-<!-- Information about webpage, metadata -->
 <head>
-
-    <!-- Standard for text, symbols, etc -->
     <meta charset="UTF-8">
-    
-    <!-- Included for matching device screen width -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    
-    <!-- Browser tab title -->
-    <title>Portfolio | Dylan James Gordon</title>
-    
-    <!-- Bootstrap CSS -->
-    <link href="bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dylan James Gordon</title>
 
-    <!-- Custom CSS, some of which designed to override/coincide with Bootstrap CSS -->
-    <link rel="stylesheet" href="styles.css">
-    
+    <style>
+        /* ---- Design tokens -------------------------------------------------
+           The aesthetic lives here. Changing these values restyles the whole
+           page, so the visual direction can be swapped without touching markup. */
+        :root {
+            --bg: #0b0b0c;
+            --fg: #e8e8ea;
+            --muted: #8a8a93;
+            --accent: #e8e8ea;
+
+            --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+            --step-0: 1rem;
+            --step-1: 1.25rem;
+            --step-2: clamp(2rem, 6vw, 3.5rem);
+
+            --measure: 65ch;
+            --gutter: clamp(1.25rem, 5vw, 3rem);
+        }
+
+        /* ---- Base ---------------------------------------------------------- */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--fg);
+            font-family: var(--font);
+            font-size: var(--step-0);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ---- Layout -------------------------------------------------------- */
+        .shell {
+            max-width: var(--measure);
+            margin-inline: auto;
+            padding: var(--gutter);
+            min-height: 100svh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        /* ---- Type ---------------------------------------------------------- */
+        h1 {
+            margin: 0;
+            font-size: var(--step-2);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        .tagline {
+            margin: 0;
+            font-size: var(--step-1);
+            color: var(--muted);
+        }
+
+        /* ---- Links --------------------------------------------------------- */
+        .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            padding: 0;
+            list-style: none;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration-color: var(--muted);
+            text-underline-offset: 0.25em;
+        }
+
+        a:hover {
+            text-decoration-color: currentColor;
+        }
+
+        a:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 3px;
+            border-radius: 2px;
+        }
+    </style>
 </head>
 
-<!-- All the visible information of the webpage -->
 <body>
+    <main class="shell">
+        <h1>Dylan James Gordon</h1>
+        <p class="tagline">Game developer. Portfolio in progress.</p>
 
-    <!-- Pixel Well Background, Custom -->
-    <canvas id="pixelCanvas"></canvas>
-    
-    <!-- Nav Bar, Bootstrapped --> 
-    <nav class="navbar bg-dark border-bottom border-body navbar-expand-lg sticky-top" data-bs-theme="dark" aria-label="Navigation">
-        <div class="container">
-
-            <a class="navbar-brand" href="#">Navigation</a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                <div class="navbar-nav">
-                    <a class="nav-link" href="#Bio">Bio</a>
-                    <a class="nav-link" href="#Artifacts">Artifacts</a>
-                    <a class="nav-link" href="#Contact">Contact</a>
-                </div>
-            </div>
-        </div>
-    </nav>
-    
-
-
-    <!-- Intro Section -->    
-    <div class="container py-5"> <!-- Bootstrap responsiveness: containers, rows, columns -->
-        <div class="row align-items-center">
-            <div class="col-12 text-center">
-                <div class="card text-center p-4">
-                        <!-- <h1> to display my name -->
-                        <h1 class="py-3 glow">Dylan James Gordon</h1>
-
-                        <!-- <p> to write a brief intro -->
-                        <p class="mb-3">Hi, I'm Dylan, and welcome to my website made with HTML, CSS, and Javascript!</p>
-                    </div>
-                </div>
-            </div>    
-        </div>
-    </div>
-    
-
-
-    <!-- Bio Section -->
-    <div class="container py-5">
-        <div class="card">
-            <div class="row align-items-center">
-                <div class="col-12 col-md-6">
-                    <h2 class="mb-3 glow" id="Bio">Bio</h2>
-                    <!-- Bio -->
-                    <p class="mb-3">
-                    My experiences have brought me all around the Pacific Northwest Region.
-                    In 2016 I started my first Bachelor's in Business Administration at Oregon State University in Corvallis, OR.
-                    After two years I transferred to Washington State University in Pullman, WA to finish my Bachelor's Degree with a Major in Management Information Systems.
-                    I graduated in 2020 where I continued to spend five years navigating the job market searching for that professional spark.    
-                    </p>
-
-                    <p class="mb-3">
-                    Then, in 2025 I caught wind of the Games, Interactive Media, and Mobile Technology program at Boise State University in Boise, ID.
-                    I am currently seeking my second Bachelor's Degree now and this website is evidence of my education and experiences.
-                    As of yet I have learned how to program this website in HTML, CSS, and Javascript, as well as two separate game projects in Unity and Unreal.
-                    The Unreal project was developed with Unreal Blueprints with a focus on systems and level design, procedural generation, and world building, and was a solo project.
-                    The Unity project was an interactive comic developed in Unity with C# and this was made in a group of four. Other tools used were Figma, Github Kanban Boards, and Krita.
-                    </p>
-
-                    <p class="mb-3">
-                    After obtaining my second degree I have my sights aligned with obtaining a career in the gaming industry as a developer and/or designer.
-                    To work on games in any capacity has become my North Star. 
-                    For a long time I pondered the question of what provided me joy and fulfillment when it came to what I wanted to achieve in my life.
-                    That's where video games have brought me, as a player, and a creator. 
-                    If you've read to this point, thank you. 
-                    Please, feel free to contact me at my information listed below.
-                    I would be happy to get in touch.
-                    </p>
-                </div>       
-
-                <div class="col-12 col-md-6">
-                    <!-- Professional photo -->
-                    <img src="images/headshot.jpg" alt="Dylan James Gordon Headshot" class="img-fluid" loading="lazy">
-                </div>
-            </div>    
-        </div>    
-    </div>
-
-
-
-    <!-- Artifact Section -->
-    <div class="container py-5">
-        <div class="card">
-            <div class="row align-items-center">
-                <div class="col-12 col-md-6 py-3">
-                        <h2 class="mb-3 glow" id="Artifacts">Artifacts</h2>
-                        <!-- Artifact 1 description -->
-                        <h3 class="glow">Github Website - <em>Bloom</em></h3>
-                        <p class="mb-3">
-                        <em>Skills & Tools: Github, Git/Cmd, Visual Studio. HTML, CSS, Javascript.</em>
-                        </p>
-                        <p class="mb-3">
-                        First time ever using all of the above listed skills and tools except Visual Studio. 
-                        As a second degree seeking student fast tracking the GIMM program I came in skipping some prerequisite courses, so I had to learn and adapt on the fly.
-                        Luckily, I had some prior experience with Visual Studio, and Visual Basic, but it was a bit of a learning curve. 
-                        I ended up redoing the repository three times as I would get halfway through, take a break, forget, and then decide I needed to relearn everything.
-                        In the end it was good practice, and I was amazed at how much power HTML, CSS, and Javascript provides.
-                        In the early 2000s HTML was the craze and it was fun to see the avant-garde designs.
-                        I was initially going to style the website after y2k chromecore, but I ended up sourcing the art style in Animal Well instead.
-                        I always thought the art and colors in the game resembled the colored code in an IDE.
-                        Utilized Bootstrap to ensure responsiveness across web and mobile.
-                        </p>   
-                </div>
-                    
-                <div class="col-12 col-md-6 py-5">
-                    <!-- Artifact 1 -->
-                    <img src="images/githubwebsite.jpg" alt="Github Website" class="img-fluid mx-auto d-block" loading="lazy">
-                </div>
-            </div>        
-                    
-            <div class="row align-items-center">
-                <div class="col-12 col-md-6 py-3">        
-                    <!-- Artifact 2 description -->     
-                    <h3 class="glow">Unreal Game - <em>Heavy Metal</em></h3>
-                    <p class="mb-3">
-                   <em>Skills & Tools: Unreal Engine, Blueprints. Systems and Level Design, Procedural Generation, and World Building.</em>
-                    </p>
-                    <p class="mb-3">
-                    I was fascinated with the visual element of node-based programming that Unreal Blueprints provided.
-                    It became a game learning how to program in Unreal and I really enjoyed it.
-                    I did get to a point where I realized I might prefer a standard IDE for larger projects, nonetheless it was a great experience that I thoroughly enjoyed.
-                    What started as a simple FPS with a cylinder bound to the first person camera that emitted spheres as "bullets," I decided I wanted to take this project a different route.
-                    I began playing with mobility systems like double jump, strafe, wall run, physics-based sliding, and then once I had a solid foundation I began combat.
-                    From there I expanded into procedurally generated levels for a roguelike, and implemented some progression leveling system.
-                    In the end I learned about developing systems, connecting them together for a cohesive flow, and tying it all together with some challenges and goals to balance player enjoyment and stress.
-                    </p>
-                </div>
-
-                <div class="col-12 col-md-6 text-center py-5">
-                    <!-- Artifact 2 -->
-                    <img src="images/unrealproject.jpg" alt="Unreal Project" class="img-fluid mx-auto d-block" loading="lazy">
-                </div>    
-            </div>
-
-            <div class="row align-items-center">
-                <div class="col-12 col-md-6 py-3">  
-                    <!-- Artifact 3 description -->   
-                    <h3 class="glow">Unity Game - <em>Realm Sim</em></h3>
-                    <p class="mb-3">
-                    <em>Skills & Tools: Unity Engine, Krita, GitHub, Kanban Boards, Visual Studio, and Figma. C#.</em>
-                    </p>
-                    <p class="mb-3">
-                    Worked with three other members to develop an interactive comic that explains to the viewer "The world is a holographic projection in our minds."
-                    The basis of the project was to learn a complex scientific topic, and through rhetoric and interactivity teach the viewer such concepts.
-                    Each one of us was involved with all stages of development from research, brainstorming, designing in Krita, prototyping in Figma, and developing the interactivity in Unity with C#.
-                    </p>    
-                </div>
-
-                <div class="col-12 col-md-6 text-center py-5">
-                    <!-- Artifact 3 -->
-                    <img src="images/unityproject.jpg" alt="Unity Project" class="img-fluid mx-auto d-block" loading="lazy">
-                </div>
-            </div>
-        </div>    
-    </div>
-
-
-    <!-- Contact Section -->
-    <div class="container py-5"> 
-        <div class="row align-items-center">
-            <div class="col-12 text-center">
-                <div class="card">
-                    <h2 class="mb-4 glow" id="Contact">Contact</h2>
-                    <!-- Contact -->
-                    <div class="d-flex justify-content-center gap-4">
-                        <a href="https://www.linkedin.com/in/dylanjamesgordon/" target="_blank">LinkedIn</a>
-                        <a href="https://www.dylanjamesgordon.com/" target="_blank">Portfolio</a>
-                        <!-- mailto only works if client has native mail plugin on desktop or mobile -->
-                        <!-- Contact form would work, but for the purposes of this assignment will leave as is - revisit later -->
-                        <a href="mailto:dylanjamesgordon15@gmail.com">Email</a>
-                    </div>
-                </div>    
-            </div>
-        </div>
-
-    </div>
-        
-    <!-- Bootstrap JS -->
-    <script src="bootstrap.bundle.min.js"></script>
-
-    <!-- Custom JS -->
-    <script src="script.js"></script> 
-
+        <ul class="links">
+            <li><a href="https://www.linkedin.com/in/dylanjamesgordon/">LinkedIn</a></li>
+            <li><a href="mailto:dylanjamesgordon15@gmail.com">Email</a></li>
+        </ul>
+    </main>
 </body>
 
 </html>
