@@ -101,12 +101,28 @@ body {
    ========================================================================== */
 
 .chrome {
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: start;
     gap: 1rem;
-    /* No top padding: the tabs hang off the top edge of the viewport. */
+    /* No top padding: the bar sits flush against the top edge. */
     padding: 0 1.25rem;
+}
+
+/* The bar itself: one band spanning the full width, dissolving downward into
+   the photograph. Drawn on a pseudo-element rather than the header so the mask
+   fades only the fill and blur — masking the header would fade the labels too.
+   It overhangs the bottom to give the gradient room to resolve. */
+.chrome::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 -1.6rem;
+    z-index: -1;
+    background: linear-gradient(180deg, rgb(6 16 20 / 66%) 0%, rgb(6 16 20 / 30%) 46%, rgb(6 16 20 / 0%) 100%);
+    backdrop-filter: blur(7px);
+    mask-image: linear-gradient(180deg, #000 42%, rgb(0 0 0 / 34%) 72%, transparent 100%);
+    pointer-events: none;
 }
 
 .chrome__group {
@@ -121,9 +137,8 @@ body {
     translate: -50% 0;
 }
 
-/* Tabs descend from the top edge and dissolve into the photograph. The mask
-   fades the fill, the blur and the divider rules together — without it the
-   backdrop blur would end on a hard line where the gradient runs out. */
+/* Tabs are segments of the bar, divided by hairlines; the bar behind them
+   carries the fill and the fade. */
 .tab {
     position: relative;
     padding: 0.45rem 2.4rem 0.95rem;
@@ -132,14 +147,10 @@ body {
     letter-spacing: 0.08em;
     text-decoration: none;
     white-space: nowrap;
-    background: linear-gradient(180deg, rgb(6 16 20 / 62%) 0%, rgb(6 16 20 / 34%) 38%, rgb(6 16 20 / 0%) 100%);
-    backdrop-filter: blur(7px);
-    mask-image: linear-gradient(180deg, #000 48%, rgb(0 0 0 / 38%) 76%, transparent 100%);
-    transition: background var(--speed) var(--ease), color var(--speed) var(--ease);
+    transition: background var(--speed) var(--ease);
 }
 
-/* Hairline between adjacent tabs, fading out on the way down with everything
-   else. */
+/* Hairline between adjacent tabs, fading out on the way down with the bar. */
 .tab+.tab::before {
     content: "";
     position: absolute;
@@ -150,7 +161,7 @@ body {
 
 a.tab:hover,
 a.tab:focus-visible {
-    background: linear-gradient(180deg, rgb(12 28 34 / 78%), rgb(12 28 34 / 0%));
+    background: linear-gradient(180deg, rgb(238 243 246 / 13%), rgb(238 243 246 / 0%));
 }
 
 a.tab:focus-visible {
