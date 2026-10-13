@@ -18,6 +18,9 @@
     --glass-edge: rgb(238 243 246 / 14%);
     --hairline: rgb(238 243 246 / 26%);
 
+    /* Shared tab width — must clear the longest label, "Dylan James Gordon". */
+    --tab-w: 11rem;
+
     /* Type */
     --mono: ui-monospace, "SF Mono", "Cascadia Mono", "JetBrains Mono", Menlo, Consolas, monospace;
     --step--1: 0.6875rem;
@@ -126,6 +129,7 @@ body {
 }
 
 .chrome__group {
+    position: relative;
     display: flex;
     align-items: stretch;
 }
@@ -137,11 +141,42 @@ body {
     translate: -50% 0;
 }
 
+/* The centre tab mirrors the others at rest but may hold a project title longer
+   than any fixed label, so it grows rather than spilling its box. */
+.chrome__group--center .tab {
+    width: auto;
+    min-width: var(--tab-w);
+}
+
+/* Edge rules closing the identity group and opening the links group, so each
+   reads as a bounded run of tabs rather than trailing off into the bar. */
+.chrome__group--identity::after,
+.chrome__group--links::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(180deg, var(--hairline), transparent);
+}
+
+.chrome__group--identity::after {
+    right: 0;
+}
+
+.chrome__group--links::before {
+    left: 0;
+}
+
 /* Tabs are segments of the bar, divided by hairlines; the bar behind them
    carries the fill and the fade. */
 .tab {
     position: relative;
-    padding: 0.45rem 2.4rem 0.95rem;
+    /* Every tab shares one width so the two groups mirror each other exactly.
+       Sized to the longest label; shorter ones centre in the space. */
+    width: var(--tab-w);
+    padding: 0.45rem 0.6rem 0.95rem;
+    text-align: center;
     color: var(--ink);
     font-size: var(--step--1);
     letter-spacing: 0.08em;
