@@ -1,7 +1,7 @@
 {
-  "name": "dylanjamesgordon.github.io",
+  "name": "dylanjamesgordon.com",
   "version": "1.0.0",
-  "description": "\"# dylanjamesgordon.github.io\"",
+  "description": "Dylan James Gordon portfolio site",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -9,16 +9,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DylanJamesGordon/dylanjamesgordon.github.io.git"
+    "url": "git+https://github.com/DylanJamesGordon/dylanjamesgordon.com.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/DylanJamesGordon/dylanjamesgordon.github.io/issues"
+    "url": "https://github.com/DylanJamesGordon/dylanjamesgordon.com/issues"
   },
-  "homepage": "https://github.com/DylanJamesGordon/dylanjamesgordon.github.io#readme",
+  "homepage": "https://github.com/DylanJamesGordon/dylanjamesgordon.com#readme",
   "dependencies": {
     "express": "^5.2.1"
   }
