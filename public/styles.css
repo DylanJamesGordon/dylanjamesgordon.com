@@ -171,58 +171,39 @@ a {
     from { opacity: 0; transform: translateY(6px); }
 }
 
-/* Home */
+/* Every panel: media on the left, text on the right. */
 
-.panel--home {
-    max-width: 40rem;
-    text-align: center;
-}
-
-.home__title {
-    margin: 0;
-    font-size: var(--text-xl);
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-}
-
-.home__focus {
-    margin: var(--space-1) 0 0;
-    color: var(--ink-dim);
-    font-size: var(--text-s);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-}
-
-.home__intro {
-    margin: var(--space-3) 0 0;
-    color: var(--ink-dim);
-    font-size: var(--text-l);
-}
-
-.tags--center {
-    justify-content: center;
-    margin-top: var(--space-3);
-}
-
-.home__pipeline {
-    margin: var(--space-2) 0 0;
-    color: var(--ink-dim);
-}
-
-.home__hint {
-    margin: var(--space-4) 0 0;
-    color: var(--ink-faint);
-    font-size: var(--text-s);
-}
-
-/* Project: media on the left, text on the right. */
-
-.panel:not(.panel--home) {
+.panel {
     display: grid;
     grid-template-columns: minmax(0, 1.7fr) minmax(16rem, 1fr);
     align-items: center;
     gap: var(--space-4);
+}
+
+/* The about panel shows one portrait in place of the reel and screenshots,
+   sized to the same height as that stack (reel + strip is about 3/4 of its width).
+   A portrait is narrow, so the text column gets the room instead, with the pair
+   centered; otherwise the name wraps and the bio runs off short screens. */
+#home {
+    grid-template-columns: auto minmax(0, 40rem);
+    justify-content: center;
+}
+
+.media.media--headshot {
+    aspect-ratio: 4 / 5;
+    height: min(calc((100svh - 25rem) * 4 / 3), 36rem);
+    width: auto;
+    max-width: 100%;
+}
+
+.panel__bio {
+    margin: var(--space-3) 0 0;
+    max-width: 32rem;
+    color: var(--ink-dim);
+}
+
+.panel__bio + .panel__bio {
+    margin-top: var(--space-2);
 }
 
 .panel__media {
@@ -437,15 +418,22 @@ a {
 
     .panel {
         grid-column: 1;
-    }
-
-    .panel:not(.panel--home) {
         grid-template-columns: minmax(0, 1fr);
         gap: var(--space-3);
     }
 
     .panel__media {
         max-width: none;
+    }
+
+    #home {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .media.media--headshot {
+        height: auto;
+        width: min(100%, 18rem);
+        justify-self: start;
     }
 
     .picker {
