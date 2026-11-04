@@ -236,9 +236,16 @@ a {
     overflow: hidden;
 }
 
+.media {
+    position: relative;
+}
+
+/* Pinned to the edges for the same reason as the thumbnails. */
 .media > img,
 .media > video,
 .media > iframe {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -355,15 +362,20 @@ a {
 }
 
 .picker__thumb {
+    position: relative;
     overflow: hidden;
 }
 
-/* Thumbnails are 16:9, so a portrait is cropped to the face. */
+/* Thumbnails are 16:9, so a portrait is cropped to the face. Pinned to the
+   box's edges: a percentage height doesn't resolve inside an aspect-ratio
+   grid cell, which left the crop centered and ignored object-position. */
 .picker__thumb > img {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: 50% 30%;
+    object-position: 50% 25%;
 }
 
 .picker__item:hover {
