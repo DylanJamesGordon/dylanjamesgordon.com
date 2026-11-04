@@ -186,10 +186,28 @@ a {
     line-height: 1.1;
 }
 
+.home__focus {
+    margin: var(--space-1) 0 0;
+    color: var(--ink-dim);
+    font-size: var(--text-s);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
 .home__intro {
     margin: var(--space-3) 0 0;
     color: var(--ink-dim);
     font-size: var(--text-l);
+}
+
+.tags--center {
+    justify-content: center;
+    margin-top: var(--space-3);
+}
+
+.home__pipeline {
+    margin: var(--space-2) 0 0;
+    color: var(--ink-dim);
 }
 
 .home__hint {
