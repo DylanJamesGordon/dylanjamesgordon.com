@@ -10,6 +10,8 @@
 const panels = [...document.querySelectorAll('.panel')];
 const items = [...document.querySelectorAll('.picker__item')];
 const ids = panels.map((panel) => panel.id);
+const prevButton = document.querySelector('.stage__arrow--prev');
+const nextButton = document.querySelector('.stage__arrow--next');
 
 function current() {
     const id = location.hash.slice(1);
@@ -25,12 +27,17 @@ function show() {
         else item.removeAttribute('aria-current');
     });
 
+    const index = ids.indexOf(id);
+    prevButton.disabled = index === 0;
+    nextButton.disabled = index === ids.length - 1;
+
     const panel = document.getElementById(id);
     document.body.style.setProperty('--tint', panel.dataset.tint || 'transparent');
 }
 
 function go(step) {
-    const next = ids[(ids.indexOf(current()) + step + ids.length) % ids.length];
+    const next = ids[ids.indexOf(current()) + step];
+    if (!next) return; // Already at the first or last panel.
     // Home has no hash; pushState keeps the URL clean instead of leaving "#".
     if (next === 'home') {
         history.pushState(null, '', location.pathname);
@@ -40,8 +47,8 @@ function go(step) {
     }
 }
 
-document.querySelector('.stage__arrow--prev').addEventListener('click', () => go(-1));
-document.querySelector('.stage__arrow--next').addEventListener('click', () => go(1));
+prevButton.addEventListener('click', () => go(-1));
+nextButton.addEventListener('click', () => go(1));
 
 document.addEventListener('keydown', (event) => {
     if (event.altKey || event.ctrlKey || event.metaKey) return;

@@ -144,13 +144,19 @@ a {
     height: 2.75rem;
     border: 1px solid var(--hairline);
     border-radius: 50%;
+    display: grid;
+    place-items: center;
+    padding: 0;
     background: none;
     color: var(--ink-dim);
-    font: inherit;
-    font-size: 1.75rem;
-    line-height: 1;
     cursor: pointer;
-    transition: color 0.15s, border-color 0.15s;
+    transition: color 0.15s, border-color 0.15s, opacity 0.15s;
+}
+
+/* At either end of the list. Hidden but still holding its space, so the
+   panel doesn't shift sideways. */
+.stage__arrow[disabled] {
+    visibility: hidden;
 }
 
 .stage__arrow:hover {
