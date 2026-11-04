@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Page not found — Dylan James Gordon</title>
+    <meta name="robots" content="noindex">
+    <!-- Root-relative paths, since this page is served at whatever bad URL was requested. -->
+    <link rel="preload" href="/fonts/geist.woff2" as="font" type="font/woff2" crossorigin>
+    <style>
+        @font-face {
+            font-family: "Geist";
+            font-weight: 100 900;
+            font-display: swap;
+            src: url("/fonts/geist.woff2") format("woff2");
+        }
+
+        :root {
+            color-scheme: dark;
+            --ink: #eef5f6;
+            --ink-dim: #9fb3b6;
+            --hairline: rgb(238 243 246 / 22%);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            min-height: 100svh;
+            display: grid;
+            place-items: center;
+            padding: 2rem;
+            background: #101619;
+            color: var(--ink);
+            font-family: "Geist", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        p {
+            margin: 0.75rem 0 0;
+            color: var(--ink-dim);
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.6rem 1.1rem;
+            border: 1px solid var(--hairline);
+            border-radius: 999px;
+            color: var(--ink);
+            text-decoration: none;
+            transition: background-color 0.15s;
+        }
+
+        a:hover,
+        a:focus-visible {
+            background: rgb(238 243 246 / 10%);
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <h1>Page not found</h1>
+        <p>That page doesn't exist, or it moved.</p>
+        <a href="/">Back home</a>
+    </main>
+</body>
+
+</html>
