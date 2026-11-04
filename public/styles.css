@@ -112,7 +112,10 @@ a {
 }
 
 .topbar__links a {
-    padding: 0.4rem 0.9rem;
+    /* Equal widths, like the tool pills. Fits the longest label, LinkedIn. */
+    width: 6rem;
+    text-align: center;
+    padding: 0.4rem 0;
     border: 1px solid var(--hairline-strong);
     border-radius: 999px;
     font-size: var(--text-s);
