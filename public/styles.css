@@ -189,7 +189,7 @@ a {
    sized to the same height as that stack (reel + strip is about 3/4 of its width).
    A portrait is narrow, so the text column gets the room instead, with the pair
    centered; otherwise the name wraps and the bio runs off short screens. */
-#home {
+.panel[data-panel="home"] {
     grid-template-columns: auto minmax(0, 40rem);
     justify-content: center;
 }
@@ -306,9 +306,6 @@ a {
 [data-tool="github"]            { --brand: #a371f7; }
 [data-tool="vs-code"]           { --brand: #3c9cf0; }
 [data-tool="jira"]              { --brand: #2684ff; }
-[data-tool="html"]              { --brand: #e34f26; }
-[data-tool="css"]               { --brand: #2965f1; }
-[data-tool="javascript"]        { --brand: #f7df1e; }
 
 .panel__pitch {
     margin: var(--space-3) 0 0;
@@ -464,7 +461,7 @@ a {
         max-width: none;
     }
 
-    #home {
+    .panel[data-panel="home"] {
         grid-template-columns: minmax(0, 1fr);
     }
 

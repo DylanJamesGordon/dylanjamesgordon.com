@@ -7,9 +7,11 @@
  * left/right keys all just change the hash.
  */
 
+// Panels are named by data-panel rather than id: an element whose id matched
+// the hash would make the browser jump to it, skipping the top bar on phones.
 const panels = [...document.querySelectorAll('.panel')];
 const items = [...document.querySelectorAll('.picker__item')];
-const ids = panels.map((panel) => panel.id);
+const ids = panels.map((panel) => panel.dataset.panel);
 const prevButton = document.querySelector('.stage__arrow--prev');
 const nextButton = document.querySelector('.stage__arrow--next');
 
@@ -21,13 +23,16 @@ function current() {
 function show() {
     const id = current();
 
-    panels.forEach((panel) => { panel.hidden = panel.id !== id; });
+    panels.forEach((panel) => { panel.hidden = panel.dataset.panel !== id; });
     items.forEach((item) => {
         if (item.dataset.panel === id) item.setAttribute('aria-current', 'page');
         else item.removeAttribute('aria-current');
     });
 
-    const panel = document.getElementById(id);
+    // Start each panel at the top on phones, where the page scrolls.
+    scrollTo(0, 0);
+
+    const panel = panels[ids.indexOf(id)];
     document.body.style.setProperty('--tint', panel.dataset.tint || 'transparent');
 }
 
