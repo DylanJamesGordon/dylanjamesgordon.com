@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Dylan James Gordon — Game Designer</title>
-    <meta name="description" content="Game designer and developer. New site in progress.">
+    <meta name="description" content="Game designer and developer.">
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="canonical" href="https://dylanjamesgordon.com/">
@@ -20,92 +20,124 @@
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="Dylan James Gordon, Game Designer">
     <meta name="twitter:card" content="summary_large_image">
+
     <link rel="preload" href="fonts/geist.woff2" as="font" type="font/woff2" crossorigin>
-    <style>
-        @font-face {
-            font-family: "Geist";
-            font-weight: 100 900;
-            font-display: swap;
-            src: url("fonts/geist.woff2") format("woff2");
-        }
-
-        :root {
-            color-scheme: dark;
-            --ink: #eef5f6;
-            --ink-dim: #9fb3b6;
-            --hairline: rgb(238 243 246 / 22%);
-        }
-
-        * { box-sizing: border-box; }
-
-        body {
-            margin: 0;
-            min-height: 100vh;
-            min-height: 100svh;
-            display: grid;
-            place-items: center;
-            padding: 2rem;
-            background: #101619;
-            color: var(--ink);
-            font-family: "Geist", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-            text-align: center;
-        }
-
-        h1 {
-            margin: 0;
-            font-size: clamp(2rem, 6vw, 3.5rem);
-            font-weight: 600;
-            letter-spacing: -0.02em;
-        }
-
-        .role {
-            margin: 0.5rem 0 0;
-            color: var(--ink-dim);
-            font-size: 1rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-
-        .status {
-            margin: 2.5rem 0 0;
-            color: var(--ink-dim);
-        }
-
-        nav {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.75rem;
-            margin-top: 1.5rem;
-        }
-
-        nav a {
-            padding: 0.6rem 1.1rem;
-            border: 1px solid var(--hairline);
-            border-radius: 999px;
-            color: var(--ink);
-            text-decoration: none;
-            transition: background-color 0.15s;
-        }
-
-        nav a:hover,
-        nav a:focus-visible {
-            background: rgb(238 243 246 / 10%);
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <main>
-        <h1>Dylan James Gordon</h1>
-        <p class="role">Game Designer</p>
-        <p class="status">New site in progress.</p>
-        <nav aria-label="Links">
-            <a href="resume.pdf">Resume</a>
+    <header class="topbar">
+        <a class="topbar__name" href="#">Dylan James Gordon <span>Game Designer</span></a>
+        <nav class="topbar__links" aria-label="Links">
+            <a href="resume.pdf" data-viewer="resume-viewer">Resume</a>
             <a href="https://www.linkedin.com/in/dylanjamesgordon/">LinkedIn</a>
             <a href="mailto:dylanjamesgordon15@gmail.com">Email</a>
         </nav>
+    </header>
+
+    <!-- One panel per page; site.js shows the one named in the URL hash
+         (no hash = home). Bracketed copy and gray boxes are placeholders. -->
+    <main class="stage">
+        <button class="stage__arrow stage__arrow--prev" type="button" aria-label="Previous">&#8249;</button>
+
+        <section class="panel panel--home" id="home" aria-label="Introduction">
+            <h1 class="home__title">Game Designer</h1>
+            <p class="home__intro">[A short intro: who you are, what you make, and what you're looking for. Two or three sentences.]</p>
+            <p class="home__hint">Pick a project below.</p>
+        </section>
+
+        <section class="panel" id="rap-wizards" data-tint="#7a4bd6" hidden>
+            <div class="panel__media">
+                <div class="media media--video">Reel</div>
+                <div class="media-strip">
+                    <div class="media">Shot</div>
+                    <div class="media">Shot</div>
+                    <div class="media">Shot</div>
+                </div>
+            </div>
+            <div class="panel__text">
+                <h2 class="panel__title">Rap Wizards</h2>
+                <p class="panel__role">Solo Developer</p>
+                <ul class="tags"><li>Unreal Engine</li></ul>
+                <p class="panel__pitch">[What the game is and what makes it fun, in a sentence or two.]</p>
+            </div>
+        </section>
+
+        <section class="panel" id="studio-pending" data-tint="#d6874b" hidden>
+            <div class="panel__media">
+                <div class="media media--video">Reel</div>
+                <div class="media-strip">
+                    <div class="media">Shot</div>
+                    <div class="media">Shot</div>
+                    <div class="media">Shot</div>
+                </div>
+            </div>
+            <div class="panel__text">
+                <h2 class="panel__title">Studio Pending</h2>
+                <p class="panel__role">Technical Director</p>
+                <ul class="tags"><li>Unreal Engine</li></ul>
+                <p class="panel__pitch">[What the studio is making, in a sentence or two.]</p>
+            </div>
+        </section>
+
+        <section class="panel" id="murloc-march" data-tint="#3fa88a" hidden>
+            <div class="panel__media">
+                <div class="media media--video">Reel</div>
+                <div class="media-strip">
+                    <div class="media">Shot</div>
+                    <div class="media">Shot</div>
+                    <div class="media">Shot</div>
+                </div>
+            </div>
+            <div class="panel__text">
+                <h2 class="panel__title">Murloc March</h2>
+                <p class="panel__role">Concept</p>
+                <ul class="tags"><li>[Engine]</li></ul>
+                <p class="panel__pitch">[The concept, in a sentence or two.]</p>
+            </div>
+        </section>
+
+        <section class="panel" id="this-website" data-tint="#4b8fd6" hidden>
+            <div class="panel__media">
+                <div class="media media--video">Reel</div>
+                <div class="media-strip">
+                    <div class="media">Shot</div>
+                    <div class="media">Shot</div>
+                    <div class="media">Shot</div>
+                </div>
+            </div>
+            <div class="panel__text">
+                <h2 class="panel__title">This Website</h2>
+                <p class="panel__role">Designer &amp; Developer</p>
+                <ul class="tags"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>
+                <p class="panel__pitch">The site you're on, designed and built with HTML, CSS and JavaScript.</p>
+            </div>
+        </section>
+
+        <button class="stage__arrow stage__arrow--next" type="button" aria-label="Next">&#8250;</button>
     </main>
+
+    <!-- Same order as the panels. Thumbnails are placeholders until there's art. -->
+    <nav class="picker" aria-label="Projects">
+        <a class="picker__item" href="#" data-panel="home"><span class="picker__thumb">&#8962;</span><span class="picker__label">Home</span></a>
+        <a class="picker__item" href="#rap-wizards" data-panel="rap-wizards"><span class="picker__thumb"></span><span class="picker__label">Rap Wizards</span></a>
+        <a class="picker__item" href="#studio-pending" data-panel="studio-pending"><span class="picker__thumb"></span><span class="picker__label">Studio Pending</span></a>
+        <a class="picker__item" href="#murloc-march" data-panel="murloc-march"><span class="picker__thumb"></span><span class="picker__label">Murloc March</span></a>
+        <a class="picker__item" href="#this-website" data-panel="this-website"><span class="picker__thumb"></span><span class="picker__label">This Website</span></a>
+    </nav>
+
+    <!-- In-page resume. The frame has no src until first opened. -->
+    <dialog class="viewer" id="resume-viewer" aria-label="Resume">
+        <div class="viewer__bar">
+            <span>Resume</span>
+            <a href="resume.pdf" download="Dylan James Gordon Resume.pdf">Download</a>
+            <button type="button" data-close>Close</button>
+        </div>
+        <iframe class="viewer__frame" title="Resume" data-src="resume.pdf#toolbar=0&amp;navpanes=0&amp;view=FitH"></iframe>
+    </dialog>
+
+    <script src="site.js" type="module"></script>
+    <script src="viewer.js" type="module"></script>
 </body>
 
 </html>

@@ -1,0 +1,450 @@
+/* Geist, one variable file covering every weight. */
+@font-face {
+    font-family: "Geist";
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url("fonts/geist.woff2") format("woff2");
+}
+
+/* =============================================================================
+   Tokens — the whole look is driven from here.
+   ========================================================================== */
+
+:root {
+    color-scheme: dark;
+
+    --bg: #101619;
+    --surface: #172024;
+    --ink: #eef5f6;
+    --ink-dim: #9fb3b6;
+    --ink-faint: #6f8487;
+    --hairline: rgb(238 243 246 / 14%);
+    --hairline-strong: rgb(238 243 246 / 30%);
+
+    --sans: "Geist", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+    /* One type scale and one spacing scale, used everywhere. */
+    --text-s: 0.8125rem;
+    --text-m: 1rem;
+    --text-l: 1.25rem;
+    --text-xl: clamp(2rem, 4vw, 3.25rem);
+
+    --space-1: 0.5rem;
+    --space-2: 1rem;
+    --space-3: 1.5rem;
+    --space-4: 2.5rem;
+
+    --radius: 10px;
+    --edge: clamp(1rem, 3vw, 2.5rem);
+
+    /* Set per panel by site.js from data-tint. */
+    --tint: transparent;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    height: 100vh;
+    height: 100svh;
+    overflow: hidden;
+    background:
+        radial-gradient(ellipse 80% 60% at 50% 45%, color-mix(in srgb, var(--tint) 14%, transparent), transparent 70%),
+        var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: var(--text-m);
+    line-height: 1.5;
+    transition: background-color 0.4s;
+}
+
+a {
+    color: inherit;
+}
+
+:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 3px;
+}
+
+/* =============================================================================
+   Top bar
+   ========================================================================== */
+
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--edge);
+    border-bottom: 1px solid var(--hairline);
+}
+
+.topbar__name {
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.topbar__name span {
+    margin-left: var(--space-1);
+    color: var(--ink-dim);
+    font-weight: 400;
+}
+
+.topbar__links {
+    display: flex;
+    gap: var(--space-1);
+}
+
+.topbar__links a {
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--hairline-strong);
+    border-radius: 999px;
+    font-size: var(--text-s);
+    text-decoration: none;
+    transition: background-color 0.15s;
+}
+
+.topbar__links a:hover {
+    background: rgb(238 243 246 / 10%);
+}
+
+/* =============================================================================
+   Stage — the one panel on screen, between two arrows
+   ========================================================================== */
+
+.stage {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--edge);
+    min-height: 0;
+}
+
+.stage__arrow {
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid var(--hairline);
+    border-radius: 50%;
+    background: none;
+    color: var(--ink-dim);
+    font: inherit;
+    font-size: 1.75rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+}
+
+.stage__arrow:hover {
+    color: var(--ink);
+    border-color: var(--hairline-strong);
+}
+
+.panel {
+    grid-column: 2;
+    grid-row: 1;
+    width: 100%;
+    max-width: 78rem;
+    max-height: 100%;
+    margin: 0 auto;
+    animation: panel-in 0.3s ease-out;
+}
+
+.panel[hidden] { /* Beats the project grid below. */
+    display: none !important;
+}
+
+@keyframes panel-in {
+    from { opacity: 0; transform: translateY(6px); }
+}
+
+/* Home */
+
+.panel--home {
+    max-width: 40rem;
+    text-align: center;
+}
+
+.home__title {
+    margin: 0;
+    font-size: var(--text-xl);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+}
+
+.home__intro {
+    margin: var(--space-3) 0 0;
+    color: var(--ink-dim);
+    font-size: var(--text-l);
+}
+
+.home__hint {
+    margin: var(--space-4) 0 0;
+    color: var(--ink-faint);
+    font-size: var(--text-s);
+}
+
+/* Project: media on the left, text on the right. */
+
+.panel:not(.panel--home) {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(16rem, 1fr);
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.panel__media {
+    display: grid;
+    gap: var(--space-1);
+    /* Leave room for the screenshot strip so the reel never pushes off screen. */
+    max-width: calc((100svh - 25rem) * 16 / 9);
+    width: 100%;
+    justify-self: end;
+}
+
+.media {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 16 / 9;
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--ink-faint);
+    font-size: var(--text-s);
+    overflow: hidden;
+}
+
+.media > img,
+.media > video,
+.media > iframe {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: 0;
+}
+
+.media-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-1);
+}
+
+.panel__title {
+    margin: 0;
+    font-size: var(--text-xl);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+}
+
+.panel__role {
+    margin: var(--space-1) 0 0;
+    color: var(--ink-dim);
+    font-size: var(--text-l);
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+    margin: var(--space-2) 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.tags li {
+    padding: 0.2rem 0.65rem;
+    border: 1px solid var(--hairline);
+    border-radius: 999px;
+    color: var(--ink-dim);
+    font-size: var(--text-s);
+}
+
+.panel__pitch {
+    margin: var(--space-3) 0 0;
+    max-width: 32rem;
+}
+
+/* =============================================================================
+   Picker — the row of projects along the bottom
+   ========================================================================== */
+
+.picker {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--edge) var(--space-3);
+    border-top: 1px solid var(--hairline);
+    overflow-x: auto;
+}
+
+.picker__item {
+    display: grid;
+    justify-items: center;
+    gap: 0.4rem;
+    flex: 0 0 auto;
+    width: 7.5rem;
+    color: var(--ink-faint);
+    font-size: var(--text-s);
+    text-decoration: none;
+    transition: color 0.15s;
+}
+
+.picker__thumb {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius);
+    background: var(--surface);
+    font-size: 1.5rem;
+    opacity: 0.6;
+    transition: opacity 0.15s, border-color 0.15s, transform 0.15s;
+}
+
+.picker__item:hover {
+    color: var(--ink-dim);
+}
+
+.picker__item:hover .picker__thumb {
+    opacity: 1;
+}
+
+.picker__item[aria-current="page"] {
+    color: var(--ink);
+}
+
+.picker__item[aria-current="page"] .picker__thumb {
+    opacity: 1;
+    border-color: var(--ink);
+    transform: translateY(-2px);
+}
+
+/* =============================================================================
+   Resume viewer
+   ========================================================================== */
+
+.viewer {
+    width: min(56rem, 92vw);
+    height: 92vh;
+    padding: 0;
+    border: 1px solid var(--hairline-strong);
+    border-radius: var(--radius);
+    background: var(--bg);
+    color: var(--ink);
+    overflow: hidden;
+}
+
+.viewer[open] {
+    display: flex;
+    flex-direction: column;
+}
+
+.viewer::backdrop {
+    background: rgb(0 0 0 / 70%);
+}
+
+.viewer__bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-2);
+    border-bottom: 1px solid var(--hairline);
+    font-size: var(--text-s);
+}
+
+.viewer__bar span {
+    margin-right: auto;
+    font-weight: 600;
+}
+
+.viewer__bar a,
+.viewer__bar button {
+    padding: 0.3rem 0.8rem;
+    border: 1px solid var(--hairline-strong);
+    border-radius: 999px;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.viewer__frame {
+    flex: 1;
+    width: 100%;
+    border: 0;
+    background: #fff;
+}
+
+/* =============================================================================
+   Small screens — stack everything and let the page scroll.
+   ========================================================================== */
+
+@media (max-width: 50rem) {
+    body {
+        height: auto;
+        min-height: 100svh;
+        overflow: auto;
+    }
+
+    .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-1);
+    }
+
+    .stage {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .stage__arrow {
+        display: none;
+    }
+
+    .panel {
+        grid-column: 1;
+    }
+
+    .panel:not(.panel--home) {
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--space-3);
+    }
+
+    .panel__media {
+        max-width: none;
+    }
+
+    .picker {
+        justify-content: flex-start;
+        position: sticky;
+        bottom: 0;
+        background: var(--bg);
+    }
+
+    .picker__item {
+        width: 6rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+}
