@@ -295,6 +295,7 @@ a {
 [data-tool="unity"]             { --brand: var(--neutral); }
 [data-tool="unreal"]            { --brand: var(--neutral); }
 [data-tool="niagara"]           { --brand: var(--neutral); }
+[data-tool="statetree"]         { --brand: var(--neutral); }
 [data-tool="blueprints"]        { --brand: #3d9bff; }
 [data-tool="csharp"]            { --brand: #a179dc; }
 [data-tool="maya"]              { --brand: #37a5cc; }
