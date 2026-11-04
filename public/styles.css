@@ -271,7 +271,31 @@ a {
     border-radius: 999px;
     color: var(--ink-dim);
     font-size: var(--text-s);
+    cursor: default;
+    transition: color 0.15s, border-color 0.15s, background-color 0.15s;
 }
+
+/* Hovering a tool lights it up in that brand's color. */
+.tags li[data-tool]:hover {
+    border-color: var(--brand);
+    background: color-mix(in srgb, var(--brand) 16%, transparent);
+    color: var(--brand);
+}
+
+/* Brand colors. Unity and Unreal are officially black and white, so they get white. */
+[data-tool="unity"]             { --brand: #ffffff; }
+[data-tool="unreal"]            { --brand: #ffffff; }
+[data-tool="blueprints"]        { --brand: #3d9bff; }
+[data-tool="csharp"]            { --brand: #a179dc; }
+[data-tool="maya"]              { --brand: #37a5cc; }
+[data-tool="substance-painter"] { --brand: #ff4f7b; }
+[data-tool="photoshop"]         { --brand: #31a8ff; }
+[data-tool="illustrator"]       { --brand: #ff9a00; }
+[data-tool="fl-studio"]         { --brand: #ff7a1a; }
+[data-tool="github"]            { --brand: #a371f7; }
+[data-tool="html"]              { --brand: #e34f26; }
+[data-tool="css"]               { --brand: #2965f1; }
+[data-tool="javascript"]        { --brand: #f7df1e; }
 
 .panel__pitch {
     margin: var(--space-3) 0 0;
