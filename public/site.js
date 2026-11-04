@@ -3,7 +3,7 @@
  *
  * The URL hash names the visible panel (#rap-wizards), so every project has a
  * link that can be shared, and the browser's back button steps between them.
- * No hash shows the home panel. The picker, the arrows and the keyboard's
+ * No hash shows the home panel. The picker, the arrows, and the keyboard's
  * left/right keys all just change the hash.
  */
 
