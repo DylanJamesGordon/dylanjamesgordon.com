@@ -207,7 +207,8 @@ a {
     color: var(--ink-dim);
 }
 
-.panel__bio + .panel__bio {
+.panel__bio + .panel__bio,
+.panel__pitch + .panel__pitch {
     margin-top: var(--space-2);
 }
 
@@ -293,6 +294,7 @@ a {
 /* Brand colors. Unity and Unreal are officially black and white, so they share the neutral hover. */
 [data-tool="unity"]             { --brand: var(--neutral); }
 [data-tool="unreal"]            { --brand: var(--neutral); }
+[data-tool="niagara"]           { --brand: var(--neutral); }
 [data-tool="blueprints"]        { --brand: #3d9bff; }
 [data-tool="csharp"]            { --brand: #a179dc; }
 [data-tool="maya"]              { --brand: #37a5cc; }
