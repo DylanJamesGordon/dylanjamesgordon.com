@@ -27,17 +27,13 @@ function show() {
         else item.removeAttribute('aria-current');
     });
 
-    const index = ids.indexOf(id);
-    prevButton.disabled = index === 0;
-    nextButton.disabled = index === ids.length - 1;
-
     const panel = document.getElementById(id);
     document.body.style.setProperty('--tint', panel.dataset.tint || 'transparent');
 }
 
 function go(step) {
-    const next = ids[ids.indexOf(current()) + step];
-    if (!next) return; // Already at the first or last panel.
+    // Wraps around: next from the last panel goes back to the first.
+    const next = ids[(ids.indexOf(current()) + step + ids.length) % ids.length];
     // Home has no hash; pushState keeps the URL clean instead of leaving "#".
     if (next === 'home') {
         history.pushState(null, '', location.pathname);

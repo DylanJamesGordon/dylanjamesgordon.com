@@ -150,13 +150,7 @@ a {
     background: none;
     color: var(--ink-dim);
     cursor: pointer;
-    transition: color 0.15s, border-color 0.15s, opacity 0.15s;
-}
-
-/* At either end of the list. Hidden but still holding its space, so the
-   panel doesn't shift sideways. */
-.stage__arrow[disabled] {
-    visibility: hidden;
+    transition: color 0.15s, border-color 0.15s;
 }
 
 .stage__arrow:hover {
