@@ -5,110 +5,93 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Dylan James Gordon — Game Designer</title>
-    <meta name="description" content="Game designer and developer. Systems, level design, and interactive work.">
-    <!-- Fetched alongside the stylesheet instead of after it, so the font
-         is usually in hand before first paint. -->
+    <meta name="description" content="Game designer and developer. New site in progress.">
     <link rel="preload" href="fonts/geist.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        @font-face {
+            font-family: "Geist";
+            font-weight: 100 900;
+            font-display: swap;
+            src: url("fonts/geist.woff2") format("woff2");
+        }
+
+        :root {
+            color-scheme: dark;
+            --ink: #eef5f6;
+            --ink-dim: #9fb3b6;
+            --hairline: rgb(238 243 246 / 22%);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            min-height: 100svh;
+            display: grid;
+            place-items: center;
+            padding: 2rem;
+            background: #101619;
+            color: var(--ink);
+            font-family: "Geist", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .role {
+            margin: 0.5rem 0 0;
+            color: var(--ink-dim);
+            font-size: 1rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .status {
+            margin: 2.5rem 0 0;
+            color: var(--ink-dim);
+        }
+
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        nav a {
+            padding: 0.6rem 1.1rem;
+            border: 1px solid var(--hairline);
+            border-radius: 999px;
+            color: var(--ink);
+            text-decoration: none;
+            transition: background-color 0.15s;
+        }
+
+        nav a:hover,
+        nav a:focus-visible {
+            background: rgb(238 243 246 / 10%);
+        }
+    </style>
 </head>
 
 <body>
-    <!-- Atmospheric backdrop. Purely decorative, so it's hidden from assistive tech. -->
-    <div class="backdrop" aria-hidden="true">
-        <div class="backdrop__scrim"></div>
-    </div>
-
-    <header class="chrome">
-        <div class="chrome__group chrome__group--identity">
-            <span class="tab">Dylan James Gordon</span>
-            <span class="tab">Game Designer</span>
-        </div>
-
-        <!-- Mirrors the selected project so the dial reads as part of the UI, not a separate widget. -->
-        <div class="chrome__group chrome__group--center">
-            <output class="tab" id="focus-label" for="dial-wheel">Rap Wizards</output>
-        </div>
-
-        <nav class="chrome__group chrome__group--links" aria-label="Links">
-            <a class="tab" href="resume.pdf" data-viewer="resume-viewer">Resume</a>
-            <a class="tab" href="https://www.linkedin.com/in/dylanjamesgordon/">LinkedIn</a>
-            <a class="tab" href="mailto:dylanjamesgordon15@gmail.com">Email</a>
+    <main>
+        <h1>Dylan James Gordon</h1>
+        <p class="role">Game Designer</p>
+        <p class="status">New site in progress.</p>
+        <nav aria-label="Links">
+            <a href="resume.pdf">Resume</a>
+            <a href="https://www.linkedin.com/in/dylanjamesgordon/">LinkedIn</a>
+            <a href="mailto:dylanjamesgordon15@gmail.com">Email</a>
         </nav>
-    </header>
-
-    <main class="stage">
-        <h1 class="visually-hidden">Dylan James Gordon, game designer</h1>
-
-        <!-- One view per project, in dial order; dial.js shows the selected one
-             over its backdrop. Bracketed copy is placeholder to be written. -->
-        <div class="stage__heroes">
-            <article class="hero">
-                <h2 class="hero__title">This Website</h2>
-                <p class="hero__role">Designer &amp; Developer <span class="meta-label">HTML · CSS · JavaScript</span></p>
-                <p class="hero__pitch">The site you're on, designed and built with HTML, CSS and JavaScript.</p>
-            </article>
-
-            <article class="hero">
-                <h2 class="hero__title">Rap Wizards</h2>
-                <p class="hero__role">Solo Developer <span class="meta-label">Unreal Engine</span></p>
-                <p class="hero__pitch">[What the game is and what makes it fun, in a sentence or two.]</p>
-            </article>
-
-            <article class="hero">
-                <h2 class="hero__title">Studio Pending</h2>
-                <p class="hero__role">Technical Director <span class="meta-label">Unreal Engine</span></p>
-                <p class="hero__pitch">[What the studio is making, in a sentence or two.]</p>
-            </article>
-
-            <article class="hero">
-                <h2 class="hero__title">Murloc March</h2>
-                <p class="hero__role">Concept <span class="meta-label">[Engine]</span></p>
-                <p class="hero__pitch">[The concept, in a sentence or two.]</p>
-            </article>
-
-            <!-- Murloc March's scene, run by march.js while that project is selected. -->
-            <canvas class="march" aria-hidden="true"></canvas>
-        </div>
-
-        <!-- Project dial. dial.js turns the wheel so the selected bar sits level
-             at the crown, and publishes each bar's distance from it. The backdrop
-             swaps to data-backdrop, or a tint of the data-art palette if unset. -->
-        <div class="dial">
-            <div class="dial__ring" aria-hidden="true"></div>
-            <ul class="dial__wheel" id="dial-wheel" aria-label="Projects">
-                <li class="spoke" style="--i: 0" data-title="This Website"
-                    data-backdrop="images/mountains.webp" data-art="1">
-                    <button class="spoke__bar" type="button">This Website</button>
-                </li>
-                <li class="spoke" style="--i: 1" data-title="Rap Wizards" data-art="2">
-                    <button class="spoke__bar" type="button">Rap Wizards</button>
-                </li>
-                <li class="spoke" style="--i: 2" data-title="Studio Pending" data-art="3">
-                    <button class="spoke__bar" type="button">Studio Pending</button>
-                </li>
-                <li class="spoke" style="--i: 3" data-title="Murloc March" data-art="4" data-scene="march">
-                    <button class="spoke__bar" type="button">Murloc March</button>
-                </li>
-            </ul>
-        </div>
     </main>
-
-    <!-- In-page resume. The frame has no src until first opened, so the PDF
-         costs nothing on initial load. -->
-    <dialog class="viewer" id="resume-viewer" aria-label="Resume">
-        <div class="viewer__bar">
-            <span class="tab">Resume</span>
-            <a class="tab" href="resume.pdf" download="Dylan James Gordon Resume.pdf">Download</a>
-            <button class="tab" type="button" data-close>Close</button>
-        </div>
-        <iframe class="viewer__frame" title="Resume" data-src="resume.pdf#toolbar=0&amp;navpanes=0&amp;view=FitH"></iframe>
-    </dialog>
-
-    <!-- backdrop.js and march.js listen for the dial's first render, so they must run before dial.js. -->
-    <script src="backdrop.js" type="module"></script>
-    <script src="march.js" type="module"></script>
-    <script src="dial.js" type="module"></script>
-    <script src="viewer.js" type="module"></script>
 </body>
 
 </html>
